@@ -12,7 +12,7 @@ import { HeavenlyStemNames, EarthlyBranchNames } from '../utils/ganzhi/GanzhiCon
  * @param max 最大值
  * @returns 修正后的索引
  */
-export function fixIndex(index: number, max: number = 12): number {
+export function FixIndex(index: number, max: number = 12): number {
   return ((index % max) + max) % max;
 }
 
@@ -21,17 +21,17 @@ export function fixIndex(index: number, max: number = 12): number {
 /**
  * 天干数组
  */
-export const HEAVENLY_STEMS = HeavenlyStemNames;
+export const HeavenlyStems = HeavenlyStemNames;
 
 /**
  * 地支数组
  */
-export const EARTHLY_BRANCHES = EarthlyBranchNames;
+export const EarthlyBranches = EarthlyBranchNames;
 
 /**
  * 宫位名称数组（从命宫开始）
  */
-export const PALACE_NAMES = [
+export const PalaceNames = [
   '命宫', '父母', '福德', '田宅', '官禄', '仆役',
   '迁移', '疾厄', '财帛', '子女', '夫妻', '兄弟'
 ];
@@ -39,7 +39,7 @@ export const PALACE_NAMES = [
 /**
  * 地支对应命主
  */
-export const EARTHLY_BRANCH_TO_SOUL: Record<string, string> = {
+export const EarthlyBranchToSoul: Record<string, string> = {
   '子': '贪狼', '丑': '巨门', '寅': '禄存', '卯': '文曲',
   '辰': '廉贞', '巳': '武曲', '午': '破军', '未': '武曲',
   '申': '廉贞', '酉': '文曲', '戌': '禄存', '亥': '巨门'
@@ -48,7 +48,7 @@ export const EARTHLY_BRANCH_TO_SOUL: Record<string, string> = {
 /**
  * 地支对应身主
  */
-export const EARTHLY_BRANCH_TO_BODY: Record<string, string> = {
+export const EarthlyBranchToBody: Record<string, string> = {
   '子': '火星', '丑': '天相', '寅': '天梁', '卯': '天同',
   '辰': '文昌', '巳': '天机', '午': '火星', '未': '天相',
   '申': '天梁', '酉': '天同', '戌': '文昌', '亥': '天机'
@@ -60,7 +60,7 @@ export const EARTHLY_BRANCH_TO_BODY: Record<string, string> = {
  * 丙辛必定寻庚起，丁壬壬位顺行流
  * 若问戊癸何方发，甲寅之上好追求
  */
-export const TIGER_RULE: Record<string, string> = {
+export const TigerRule: Record<string, string> = {
   '甲': '丙', '己': '丙',
   '乙': '戊', '庚': '戊',
   '丙': '庚', '辛': '庚',
@@ -74,7 +74,7 @@ export const TIGER_RULE: Record<string, string> = {
  * @param fiveElementsClass 五行局字符串（如"火六局"）
  * @returns 五行局数字（2/3/4/5/6）
  */
-export function parseFiveElementsClass(fiveElementsClass: string): number {
+export function ParseFiveElementsClass(fiveElementsClass: string): number {
   // 先尝试匹配阿拉伯数字
   const arabicMatch = fiveElementsClass.match(/\d+/);
   if (arabicMatch) {
@@ -105,7 +105,7 @@ export function parseFiveElementsClass(fiveElementsClass: string): number {
  * @param earthlyBranch 地支名称
  * @returns 阴阳属性
  */
-export function getYinYangOfEarthlyBranch(earthlyBranch: string): '阴' | '阳' {
+export function GetYinYangOfEarthlyBranch(earthlyBranch: string): '阴' | '阳' {
   const yangBranches = ['子', '寅', '辰', '午', '申', '戌'];
   return yangBranches.includes(earthlyBranch) ? '阳' : '阴';
 }
@@ -116,7 +116,7 @@ export function getYinYangOfEarthlyBranch(earthlyBranch: string): '阴' | '阳' 
  * @param earthlyBranch 地支名称
  * @returns 地支索引（0-11）
  */
-export function getEarthlyBranchIndex(earthlyBranch: string): number {
+export function GetEarthlyBranchIndex(earthlyBranch: string): number {
   const branches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   return branches.indexOf(earthlyBranch);
 }

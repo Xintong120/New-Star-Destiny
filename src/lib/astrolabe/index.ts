@@ -6,7 +6,7 @@
 export * from './utils';
 
 // 导出类型定义
-export type { LifePalaceInfo, SoulAndBodyInfo, PalaceStar, Palace } from '../../types/astrolabe';
+export type { LifePalaceInfo, SoulAndBodyInfo, PalaceStar, Palace } from '../../types/astrolabe/index';
 
 // 导出计算函数
 export * from './PalacePosition';

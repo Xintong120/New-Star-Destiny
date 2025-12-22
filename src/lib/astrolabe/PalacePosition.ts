@@ -2,7 +2,7 @@
  * 紫微斗数宫位位置计算
  */
 
-import { fixIndex } from './utils';
+import { FixIndex } from './utils';
 
 /**
  * 计算命宫位置
@@ -16,7 +16,7 @@ import { fixIndex } from './utils';
  * @param timeIndex 时辰索引（0-12）
  * @returns 命宫索引（0-11，0=寅宫）
  */
-export function calculateLifePalaceIndex(lunarMonth: number, timeIndex: number): number {
+export function CalculateLifePalaceIndex(lunarMonth: number, timeIndex: number): number {
   // 将timeIndex转换为地支索引
   // timeIndex: 0=早子, 1=丑, 2=寅, ..., 11=亥, 12=晚子
   // 地支索引: 0=子, 1=丑, 2=寅, ..., 11=亥
@@ -35,8 +35,8 @@ export function calculateLifePalaceIndex(lunarMonth: number, timeIndex: number):
   // 命宫索引计算：
   // 1. 先将农历月份转成以寅为0的索引：lunarMonth + 1 - 2 = lunarMonth - 1
   // 2. 再减去时辰地支索引
-  const monthIndex = fixIndex(lunarMonth - 1);  // 转成以寅为0的索引
-  const soulIndex = fixIndex(monthIndex - earthlyBranchIndex);
+  const monthIndex = FixIndex(lunarMonth - 1);  // 转成以寅为0的索引
+  const soulIndex = FixIndex(monthIndex - earthlyBranchIndex);
 
   return soulIndex;
 }
@@ -50,7 +50,7 @@ export function calculateLifePalaceIndex(lunarMonth: number, timeIndex: number):
  * @param timeIndex 时辰索引（0-12）
  * @returns 身宫索引（0-11）
  */
-export function calculateBodyPalaceIndex(lunarMonth: number, timeIndex: number): number {
+export function CalculateBodyPalaceIndex(lunarMonth: number, timeIndex: number): number {
   // 将timeIndex转换为地支索引
   let earthlyBranchIndex: number;
   if (timeIndex === 0 || timeIndex === 12) {
@@ -64,8 +64,8 @@ export function calculateBodyPalaceIndex(lunarMonth: number, timeIndex: number):
   // 身宫索引计算：
   // 1. 先将农历月份转成以寅为0的索引：lunarMonth - 1
   // 2. 再加上时辰地支索引
-  const monthIndex = fixIndex(lunarMonth - 1);  // 转成以寅为0的索引
-  const bodyIndex = fixIndex(monthIndex + earthlyBranchIndex);
+  const monthIndex = FixIndex(lunarMonth - 1);  // 转成以寅为0的索引
+  const bodyIndex = FixIndex(monthIndex + earthlyBranchIndex);
 
   return bodyIndex;
 }

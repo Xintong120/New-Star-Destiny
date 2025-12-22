@@ -2,7 +2,7 @@
  * 紫微斗数五行局计算
  */
 
-import { HEAVENLY_STEMS, EARTHLY_BRANCHES } from './utils';
+import { HeavenlyStemNames as HeavenlyStems, EarthlyBranchNames as EarthlyBranches } from '../utils/ganzhi/GanzhiConstants';
 
 /**
  * 获取五行局
@@ -19,18 +19,18 @@ import { HEAVENLY_STEMS, EARTHLY_BRANCHES } from './utils';
  * @param lifePalaceEarthlyBranch 命宫地支
  * @returns 五行局名称
  */
-export function getFiveElementsClass(
+export function GetFiveElementsClass(
   lifePalaceHeavenlyStem: string,
   lifePalaceEarthlyBranch: string
 ): string {
   const fiveElementsTable = ['木三局', '金四局', '水二局', '火六局', '土五局'];
 
   // 天干取数：每两个天干一组，甲乙→1, 丙丁→2, 戊己→3, 庚辛→4, 壬癸→5
-  const heavenlyStemIndex = HEAVENLY_STEMS.indexOf(lifePalaceHeavenlyStem);
+  const heavenlyStemIndex = HeavenlyStems.indexOf(lifePalaceHeavenlyStem);
   const heavenlyStemNumber = Math.floor(heavenlyStemIndex / 2) + 1;
 
   // 地支取数：子午丑未→1, 寅申卯酉→2, 辰戌巳亥→3
-  const earthlyBranchIndex = EARTHLY_BRANCHES.indexOf(lifePalaceEarthlyBranch);
+  const earthlyBranchIndex = EarthlyBranches.indexOf(lifePalaceEarthlyBranch);
   // 使用 fixIndex(index, 6) 将12地支映射到6个模式，然后除以2得到1、2、3
   const earthlyBranchNumber = Math.floor((earthlyBranchIndex % 6) / 2) + 1;
 
