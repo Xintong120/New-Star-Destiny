@@ -66,11 +66,12 @@
                 <span class="scale-90 origin-right">{{ data.gods.suiQian }}</span>
             </div>
 
-            <!-- 大限 -->
             <div class="flex justify-between items-end mt-[1px] md:mt-0.5">
+                <!-- 大限 -->
                 <span class="text-[0.45rem] md:text-sm font-mono font-bold bg-gray-100 px-[1px] md:px-1 rounded-[1px] md:rounded-sm text-gray-800 leading-none">
                     {{ data.ageRange }}
                 </span>
+                <!-- Index -->
                 <span class="text-[0.35rem] md:text-[9px] text-gray-300 leading-none">{{ index + 1 }}</span>
             </div>
         </footer>

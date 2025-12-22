@@ -1,53 +1,33 @@
 <template>
-  <div id="app" class="min-h-screen relative overflow-hidden flex flex-col">
+    <div id="app" class="min-h-screen relative overflow-hidden flex flex-col">
 
-      <!-- 顶部导航区 -->
-      <header class="fixed top-0 left-0 w-full z-40 bg-[#FDFDFD]/95 backdrop-blur-sm border-b border-gray-100 h-14">
-          <nav-bar
-              :current-view="view"
-              @reset="resetApp"
-              @open-sidebar="openSidebar"
-          ></nav-bar>
-      </header>
+        <!-- 顶部导航区 -->
+        <header class="fixed top-0 left-0 w-full z-40 bg-[#FDFDFD]/95 backdrop-blur-sm border-b border-gray-100 h-14">
+            <nav-bar :current-view="view" @reset="resetApp" @open-sidebar="openSidebar"></nav-bar>
+        </header>
 
-      <!-- 主内容区 -->
-      <main class="flex-1 pt-14 min-h-screen relative" role="main">
+        <!-- 主内容区 -->
+        <main class="flex-1 pt-14 min-h-screen relative" role="main">
 
-          <!-- 首页视图 -->
-          <transition
-              enter-active-class="transition duration-700 ease-out"
-              enter-from-class="opacity-0 translate-y-4"
-              enter-to-class="opacity-100 translate-y-0"
-              leave-active-class="transition duration-300 ease-in"
-              leave-from-class="opacity-100"
-              leave-to-class="opacity-0"
-          >
-              <home-view v-if="view === 'home'" @start="openSidebar"></home-view>
-          </transition>
+            <!-- 首页视图 -->
+            <transition enter-active-class="transition duration-700 ease-out" enter-from-class="opacity-0 translate-y-4"
+                enter-to-class="opacity-100 translate-y-0" leave-active-class="transition duration-300 ease-in"
+                leave-from-class="opacity-100" leave-to-class="opacity-0">
+                <home-view v-if="view === 'home'" @start="openSidebar"></home-view>
+            </transition>
 
-          <!-- 命盘视图 -->
-          <transition
-              enter-active-class="transition duration-1000 ease-out delay-150"
-              enter-from-class="opacity-0 scale-95"
-              enter-to-class="opacity-100 scale-100"
-          >
-              <chart-view
-                  v-if="view === 'chart'"
-                  :user-data="formData"
-                  :full-chart-data="currentChartData"
-                  @change-limit="handleLimitChange"
-              ></chart-view>
-          </transition>
-      </main>
+            <!-- 命盘视图 -->
+            <transition enter-active-class="transition duration-1000 ease-out delay-150"
+                enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100">
+                <chart-view v-if="view === 'chart'" :user-data="formData" :full-chart-data="currentChartData"
+                    @change-limit="handleLimitChange"></chart-view>
+            </transition>
+        </main>
 
-      <!-- 侧边栏表单 (模态对话框) -->
-      <sidebar-form
-          v-model:is-open="isSidebarOpen"
-          v-model:form-data="formData"
-          @submit="handleFormSubmit"
-          @save-local="saveToLocalStorage"
-      ></sidebar-form>
-  </div>
+        <!-- 侧边栏表单 (模态对话框) -->
+        <sidebar-form v-model:is-open="isSidebarOpen" v-model:form-data="formData" @submit="handleFormSubmit"
+            @save-local="saveToLocalStorage"></sidebar-form>
+    </div>
 </template>
 
 <script>
@@ -56,8 +36,10 @@ import NavBar from './components/common/NavBar.vue';
 import HomeView from './components/common/HomeView.vue';
 import SidebarForm from './components/common/SidebarForm.vue';
 import ChartView from './components/chart/ChartView.vue';
-import { MOCK_FULL_CHART_DATA, EARTHLY_BRANCHES } from './constants/index.js';
-import { GanZhiCalculator, AgeCalculation, SolarToLunarConverter, GanzhiStringUtils } from './lib/utils/index.js';
+import { MockFullChartData, EarthlyBranches } from './constants/index.js';
+import { GanZhiCalculator, NominalAgeCalculator, SolarToLunarConverter, GanzhiStringUtils } from './lib/utils/index.js';
+import { ConstellationCalculator, ZodiacCalculator } from './lib/utils/person_info/index.js';
+import { CalculateLifePalaceIndex, CalculateBodyPalaceIndex } from './lib/astrolabe/PalacePosition.js';
 
 export default {
     name: 'App',
@@ -83,11 +65,11 @@ export default {
         // 计算当前命盘数据
         const currentChartData = computed(() => {
             if (!formData.birthDate || !formData.birthTime) {
-                return MOCK_FULL_CHART_DATA; // 如果没有输入数据，返回默认mock数据
+                return MockFullChartData; // 如果没有输入数据，返回默认mock数据
             }
 
             // 获取时辰索引
-            const timeIndex = EARTHLY_BRANCHES.findIndex(b => b.key === formData.birthTime);
+            const timeIndex = EarthlyBranches.findIndex(b => b.key === formData.birthTime);
 
             // 出生日期处理
             let solarBirthDate = formData.birthDate;
@@ -103,7 +85,7 @@ export default {
             // 计算年龄
             const todayDate = new Date().toISOString().slice(0, 10);
             const todayLunar = SolarToLunarConverter.solar2lunar(todayDate);
-            const age = AgeCalculation.calculateNominalAge(birthdayLunar, todayLunar, 'birthday');
+            const age = NominalAgeCalculator.CalculateNominalAge(birthdayLunar, todayLunar, 'birthday');
 
             // 计算四柱
             const ganzhi = GanZhiCalculator.getGanZhi(new Date(solarBirthDate), timeIndex);
@@ -111,11 +93,26 @@ export default {
             const sizhu = `${ganzhiStrings.yearly} ${ganzhiStrings.monthly} ${ganzhiStrings.daily} ${ganzhiStrings.hourly}`;
 
             // 获取时辰标签
-            const timeLabel = EARTHLY_BRANCHES.find(b => b.key === formData.birthTime)?.label || '';
+            const timeLabel = EarthlyBranches.find(b => b.key === formData.birthTime)?.label || '';
+
+            // 计算星座和生肖
+            const zodiac = ZodiacCalculator.getZodiacBySolarDate(solarBirthDate);
+            const constellation = ConstellationCalculator.getConstellationBySolarDate(solarBirthDate);
+
+
+            // 计算命宫和身宫位置
+            const lunarMonth = birthdayLunar.lunarMonth || birthdayLunar.month || 1; // 农历月份 1-12
+            const lifePalaceIndex = CalculateLifePalaceIndex(lunarMonth, timeIndex);
+            const bodyPalaceIndex = CalculateBodyPalaceIndex(lunarMonth, timeIndex);
+
+            // 地支数组：0=寅, 1=卯, ..., 11=丑
+            const earthlyBranches = ['寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥', '子', '丑'];
+            const lifePalace = earthlyBranches[lifePalaceIndex];
+            const bodyPalace = earthlyBranches[bodyPalaceIndex];
 
             // 返回计算后的数据
             return {
-                ...MOCK_FULL_CHART_DATA,
+                ...MockFullChartData,
                 centerInfo: {
                     name: formData.name || '无名氏',
                     gender: formData.gender,
@@ -125,12 +122,12 @@ export default {
                     solarDate: solarBirthDate,
                     lunarDate: lunarDate,
                     time: timeLabel,
-                    zodiac: "龙", // 暂时mock
-                    constellation: "狮子座", // 暂时mock
+                    zodiac: zodiac,
+                    constellation: constellation,
                     lifeMaster: "武曲", // 暂时mock
                     bodyMaster: "文昌", // 暂时mock
-                    lifePalace: "未", // 暂时mock
-                    bodyPalace: "酉" // 暂时mock
+                    lifePalace: lifePalace,
+                    bodyPalace: bodyPalace
                 }
             };
         });

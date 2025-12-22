@@ -1,4 +1,4 @@
-const EARTHLY_BRANCHES = [
+const EarthlyBranches = [
   { key: 'zi', label: '子时 (23:00-01:00)' },
   { key: 'chou', label: '丑时 (01:00-03:00)' },
   { key: 'yin', label: '寅时 (03:00-05:00)' },
@@ -13,7 +13,7 @@ const EARTHLY_BRANCHES = [
   { key: 'hai', label: '亥时 (21:00-23:00)' },
 ];
 
-const MOCK_FULL_CHART_DATA = {
+const MockFullChartData = {
     centerInfo: {
         name: "张三",
         gender: "male",
@@ -60,4 +60,4 @@ const MOCK_FULL_CHART_DATA = {
     ]
 };
 
-export { EARTHLY_BRANCHES, MOCK_FULL_CHART_DATA };
+export { EarthlyBranches, MockFullChartData };

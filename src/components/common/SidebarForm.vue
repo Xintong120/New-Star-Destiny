@@ -153,10 +153,10 @@ import { computed } from 'vue';
 
 /**
  * 常量导入：地支时辰数据
- * - EARTHLY_BRANCHES: 12个时辰选项数组
+ * - EarthlyBranches: 12个时辰选项数组
  * - 每个选项包含key(值)和label(显示文本)
  */
-import { EARTHLY_BRANCHES } from '../../constants/index.js';
+import { EarthlyBranches } from '../../constants/index.js';
 
 /**
  * Vue组件定义
@@ -211,7 +211,7 @@ export default {
          * 时辰选项数据
          * 从常量导入，直接提供给模板的v-for使用
          */
-        const branches = EARTHLY_BRANCHES;
+        const branches = EarthlyBranches;
 
         /**
          * 表单提交处理函数

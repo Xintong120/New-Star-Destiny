@@ -69,14 +69,16 @@ export default {
     },
     setup(props) {
         const uiGridOrder = computed(() => {
+            /* 十二地支固定顺序: 寅卯辰巳午未申酉戌亥子丑 */
             const p = (branch) => props.fullChartData.palaces.find(x => x.branch === branch);
             return [
-                p('巳'), p('午'), p('未'), p('申'), // Top
-                p('酉'),                         // Right Top
-                p('戌'),                         // Right Bottom
-                p('亥'), p('子'), p('丑'), p('寅'), // Bottom
-                p('卯'),                         // Left Bottom
-                p('辰')                          // Left Top
+                p('寅'), p('卯'), p('辰'), p('巳'), // Left(bottom to top) ↑
+                p('午'),                         // Right Top →
+                p('未'),                         // Left Top →
+                p('申'), p('酉'), p('戌'), p('亥'), // Right(top to bottom) ↓
+                p('子'),                         // Right Bottom ←
+                p('丑'),                         // Left Bottom ←
+
             ];
         });
 
@@ -89,25 +91,25 @@ export default {
             // 需要注意的是 Tailwind 的类名在不加前缀时默认作用于所有尺寸
 
             // 顶部一行
-            if (index === 0) return 'col-start-1 row-start-1 border-b-[0.5px] border-r-[0.5px]';
-            if (index === 1) return 'col-start-2 row-start-1 border-b-[0.5px] border-r-[0.5px]';
-            if (index === 2) return 'col-start-3 row-start-1 border-b-[0.5px] border-r-[0.5px]';
-            if (index === 3) return 'col-start-4 row-start-1 border-b-[0.5px]';
+            if (index === 3) return 'col-start-1 row-start-1 border-b-[0.5px] border-r-[0.5px]';
+            if (index === 4) return 'col-start-2 row-start-1 border-b-[0.5px] border-r-[0.5px]';
+            if (index === 5) return 'col-start-3 row-start-1 border-b-[0.5px] border-r-[0.5px]';
+            if (index === 6) return 'col-start-4 row-start-1 border-b-[0.5px]';
 
             // 右侧一列
-            if (index === 4) return 'col-start-4 row-start-2 border-b-[0.5px]';
-            if (index === 5) return 'col-start-4 row-start-3 border-b-[0.5px]';
+            if (index === 7) return 'col-start-4 row-start-2 border-b-[0.5px]';
+            if (index === 8) return 'col-start-4 row-start-3 border-b-[0.5px]';
 
             // 底部一行 (注意顺序是 亥 子 丑 寅)
-            // uiGridOrder[6]是亥(Bottom Right), [7]是子, [8]是丑, [9]是寅(Bottom Left)
-            if (index === 6) return 'col-start-4 row-start-4 border-l-[0.5px]';
-            if (index === 7) return 'col-start-3 row-start-4 border-r-[0.5px]';
-            if (index === 8) return 'col-start-2 row-start-4 border-r-[0.5px]';
-            if (index === 9) return 'col-start-1 row-start-4 border-r-[0.5px]';
+            // uiGridOrder[9]是亥(Bottom Right), [10]是子, [11]是丑, [0]是寅(Bottom Left)
+            if (index === 9) return 'col-start-4 row-start-4 border-l-[0.5px]';
+            if (index === 10) return 'col-start-3 row-start-4 border-r-[0.5px]';
+            if (index === 11) return 'col-start-2 row-start-4 border-r-[0.5px]';
+            if (index === 0) return 'col-start-1 row-start-4 border-r-[0.5px]';
 
             // 左侧一列
-            if (index === 10) return 'col-start-1 row-start-3 border-t-[0.5px] border-r-[0.5px]';
-            if (index === 11) return 'col-start-1 row-start-2 border-t-[0.5px] border-r-[0.5px]';
+            if (index === 1) return 'col-start-1 row-start-3 border-t-[0.5px] border-r-[0.5px]';
+            if (index === 2) return 'col-start-1 row-start-2 border-t-[0.5px] border-r-[0.5px]';
 
             return '';
         };
