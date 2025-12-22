@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
+  base: process.env.NODE_ENV === 'production' ? '/New-Star-Destiny/' : '/',
   server: {
     port: 4000,
     open: true,
