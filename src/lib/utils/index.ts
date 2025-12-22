@@ -21,7 +21,8 @@ export { GanzhiValidation } from './ganzhi/GanzhiValidation';
 export { GanZhiCalculator } from './ganzhi/GanZhiCalculator';
 
 // 年龄相关工具
-export { AgeCalculation } from './age/AgeCalculation';
+export { NominalAgeCalculator } from './age/NominalAgeCalculator';
+export { ActualAgeCalculator } from './age/ActualAgeCalculator';
 export { AgeLimit } from './age/AgeLimit';
 export { DecadalLimit } from './age/DecadalLimit';
 export { ChildhoodLimit } from './age/ChildhoodLimit';

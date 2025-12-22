@@ -7,12 +7,12 @@ export class FiveElementsCalculator {
   /**
    * 五行局映射表
    */
-  private static readonly FIVE_ELEMENTS_TABLE: string[] = ['wood3rd', 'metal4th', 'water2nd', 'fire6th', 'earth5th'];
+  private static readonly FiveElementsTable: string[] = ['wood3rd', 'metal4th', 'water2nd', 'fire6th', 'earth5th'];
 
   /**
    * 五行局显示名称映射
    */
-  private static readonly FIVE_ELEMENTS_NAMES: Record<string, string> = {
+  private static readonly FiveElementsNames: Record<string, string> = {
     'wood3rd': '木三局',
     'metal4th': '金四局',
     'water2nd': '水二局',
@@ -26,13 +26,13 @@ export class FiveElementsCalculator {
    * @param max 最大循环数，默认为12
    * @returns 处理后的索引
    */
-  private static fixIndex(index: number, max: number = 12): number {
+  private static FixIndex(index: number, max: number = 12): number {
     if (index < 0) {
-      return this.fixIndex(index + max, max);
+      return this.FixIndex(index + max, max);
     }
 
     if (index > max - 1) {
-      return this.fixIndex(index - max, max);
+      return this.FixIndex(index - max, max);
     }
 
     const res = 1 / index === -Infinity ? 0 : index;
@@ -82,12 +82,12 @@ export class FiveElementsCalculator {
    * @param earthlyBranch 地支 (如: '子', '丑', '寅'...)
    * @returns 五行局名称 (如: '木三局', '金四局'...)
    */
-  static getFiveElementsClass(heavenlyStem: string, earthlyBranch: string): string {
+  static GetFiveElementsClass(heavenlyStem: string, earthlyBranch: string): string {
     // 天干取数：甲乙1, 丙丁2, 戊己3, 庚辛4, 壬癸5
     const heavenlyStemNumber = Math.floor(HeavenlyStemNames.indexOf(heavenlyStem) / 2) + 1;
 
     // 地支取数：子午丑未1, 寅申卯酉2, 辰戌巳亥3
-    const earthlyBranchNumber = Math.floor(this.fixIndex(EarthlyBranchNames.indexOf(earthlyBranch), 6) / 2) + 1;
+    const earthlyBranchNumber = Math.floor(this.FixIndex(EarthlyBranchNames.indexOf(earthlyBranch), 6) / 2) + 1;
 
     // 干支数相加
     let index = heavenlyStemNumber + earthlyBranchNumber;
@@ -98,8 +98,8 @@ export class FiveElementsCalculator {
     }
 
     // 获取五行局key并转换为显示名称
-    const fiveElementsKey = this.FIVE_ELEMENTS_TABLE[index - 1];
-    return this.FIVE_ELEMENTS_NAMES[fiveElementsKey] || '未知';
+    const fiveElementsKey = this.FiveElementsTable[index - 1];
+    return this.FiveElementsNames[fiveElementsKey] || '未知';
   }
 
   /**
@@ -107,7 +107,7 @@ export class FiveElementsCalculator {
    * @param ganzhi 干支组合 (如: '甲子', '丙午'...)
    * @returns 五行属性
    */
-  static getFiveElementsByGanzhi(ganzhi: string): string {
+  static GetFiveElementsByGanzhi(ganzhi: string): string {
     if (ganzhi.length !== 2) {
       throw new Error(`Invalid ganzhi format: ${ganzhi}`);
     }
@@ -115,15 +115,15 @@ export class FiveElementsCalculator {
     const heavenlyStem = ganzhi[0];
     const earthlyBranch = ganzhi[1];
 
-    return this.getFiveElementsClass(heavenlyStem, earthlyBranch);
+    return this.GetFiveElementsClass(heavenlyStem, earthlyBranch);
   }
 
   /**
    * 获取所有五行局名称列表
    * @returns 五行局名称数组
    */
-  static getAllFiveElementsClasses(): string[] {
-    return Object.values(this.FIVE_ELEMENTS_NAMES);
+  static GetAllFiveElementsClasses(): string[] {
+    return Object.values(this.FiveElementsNames);
   }
 
   /**
@@ -131,9 +131,9 @@ export class FiveElementsCalculator {
    * @param chineseName 中文五行局名称
    * @returns 英文标识符
    */
-  static getEnglishKey(chineseName: string): string {
+  static GetEnglishKey(chineseName: string): string {
     const reverseMap: Record<string, string> = {};
-    Object.entries(this.FIVE_ELEMENTS_NAMES).forEach(([key, value]) => {
+    Object.entries(this.FiveElementsNames).forEach(([key, value]) => {
       reverseMap[value] = key;
     });
 
@@ -145,7 +145,7 @@ export class FiveElementsCalculator {
    * @param fiveElementsClass 五行局名称
    * @returns 对应的数字 (2, 3, 4, 5, 6)
    */
-  static getClassNumber(fiveElementsClass: string): number {
+  static GetClassNumber(fiveElementsClass: string): number {
     const numberMap: Record<string, number> = {
       '水二局': 2,
       '木三局': 3,
@@ -162,7 +162,7 @@ export class FiveElementsCalculator {
    * @param fiveElementsClass 五行局名称
    * @returns 详细信息对象
    */
-  static getFiveElementsInfo(fiveElementsClass: string): {
+  static GetFiveElementsInfo(fiveElementsClass: string): {
     name: string;
     element: string;
     number: number;
@@ -179,8 +179,8 @@ export class FiveElementsCalculator {
     return {
       name: fiveElementsClass,
       element: elementMap[fiveElementsClass] || '未知',
-      number: this.getClassNumber(fiveElementsClass),
-      englishKey: this.getEnglishKey(fiveElementsClass)
+      number: this.GetClassNumber(fiveElementsClass),
+      englishKey: this.GetEnglishKey(fiveElementsClass)
     };
   }
 }

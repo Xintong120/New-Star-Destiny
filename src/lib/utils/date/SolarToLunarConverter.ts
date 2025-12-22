@@ -19,7 +19,9 @@ export class SolarToLunarConverter {
     // 添加 toString 方法
     result.toString = function(includeTime?: boolean): string {
       const timeStr = includeTime ? ' (含时间)' : '';
-      return `${this.lunarYear}年${this.lunarMonthName}${this.lunarDayName}${timeStr}`;
+      const monthName = this.lunarMonthName || `${this.lunarMonth}月`;
+      const dayName = this.lunarDayName || `${this.lunarDay}日`;
+      return `${this.lunarYear}年${monthName}${dayName}${timeStr}`;
     };
     
     return result as LunarDate;
