@@ -40,6 +40,8 @@ import { MockFullChartData, EarthlyBranches } from './constants/index.js';
 import { GanZhiCalculator, NominalAgeCalculator, SolarToLunarConverter, GanzhiStringUtils } from './lib/utils/index.js';
 import { ConstellationCalculator, ZodiacCalculator } from './lib/utils/person_info/index.js';
 import { CalculateLifePalaceIndex, CalculateBodyPalaceIndex } from './lib/astrolabe/PalacePosition.js';
+import { CalculateLifePalaceGanZhi } from './lib/astrolabe/GanZhi.js';
+import { CalculateTwelvePalaces } from './lib/astrolabe/palaces.js';
 
 export default {
     name: 'App',
@@ -110,24 +112,61 @@ export default {
             const lifePalace = earthlyBranches[lifePalaceIndex];
             const bodyPalace = earthlyBranches[bodyPalaceIndex];
 
+            // 计算真正的十二宫天干地支
+
+            const lifePalaceInfo = CalculateLifePalaceGanZhi(lifePalaceIndex, ganzhi);
+            const calculatedPalaces = CalculateTwelvePalaces(lifePalaceInfo, lifePalaceIndex, bodyPalaceIndex);
+
+            // 地支到英文key的映射
+            const branchToKey = {
+                '子': 'zi', '丑': 'chou', '寅': 'yin', '卯': 'mao',
+                '辰': 'chen', '巳': 'si', '午': 'wu', '未': 'wei',
+                '申': 'shen', '酉': 'you', '戌': 'xu', '亥': 'hai'
+            };
+
+            // 将计算的palaces转换为mock格式
+            const palaces = calculatedPalaces.map((palace, index) => {
+                const mockPalace = MockFullChartData.palaces.find(p => p.branch === palace.earthlyBranch);
+                return {
+                    id: branchToKey[palace.earthlyBranch],
+                    name: palace.name,
+                    stem: palace.heavenlyStem,
+                    branch: palace.earthlyBranch,
+                    majorStars: palace.majorStars || [],
+                    minorStars: palace.minorStars || [],
+                    miscStars: mockPalace ? mockPalace.miscStars : [],
+                    gods: mockPalace ? mockPalace.gods : {},
+                    ageRange: mockPalace ? mockPalace.ageRange : ''
+                };
+            });
+
+            // 在控制台输出十二宫位天干地支信息
+            console.log('=== 十二宫位天干地支计算结果 ===');
+            palaces.forEach((palace, index) => {
+                console.log(`${index}: ${palace.name}宫 - ${palace.stem}${palace.branch} (${palace.id})`);
+            });
+            console.log('================================');
+
+
             // 返回计算后的数据
             return {
                 ...MockFullChartData,
+                palaces,
                 centerInfo: {
-                    name: formData.name || '无名氏',
-                    gender: formData.gender,
-                    wuxing: "木三局", // 暂时保持mock
-                    age: age,
-                    sizhu: sizhu,
-                    solarDate: solarBirthDate,
-                    lunarDate: lunarDate,
-                    time: timeLabel,
-                    zodiac: zodiac,
-                    constellation: constellation,
-                    lifeMaster: "武曲", // 暂时mock
-                    bodyMaster: "文昌", // 暂时mock
-                    lifePalace: lifePalace,
-                    bodyPalace: bodyPalace
+                    name: formData.name || '无名氏', // 用户姓名
+                    gender: formData.gender, // 性别：male/female
+                    wuxing: "木三局", // 五行局（暂时保持mock，后续计算）
+                    age: age, // 虚岁年龄
+                    sizhu: sizhu, // 四柱（年月日时干支）
+                    solarDate: solarBirthDate, // 阳历出生日期
+                    lunarDate: lunarDate, // 农历出生日期
+                    time: timeLabel, // 出生时辰描述
+                    zodiac: zodiac, // 生肖
+                    constellation: constellation, // 星座
+                    lifeMaster: "武曲", // 命主星（暂时mock，后续计算）
+                    bodyMaster: "文昌", // 身主星（暂时mock，后续计算）
+                    lifePalace: lifePalace, // 命宫地支
+                    bodyPalace: bodyPalace // 身宫地支
                 }
             };
         });
