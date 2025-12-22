@@ -42,6 +42,7 @@ import { ConstellationCalculator, ZodiacCalculator } from './lib/utils/person_in
 import { CalculateLifePalaceIndex, CalculateBodyPalaceIndex } from './lib/astrolabe/PalacePosition.js';
 import { CalculateLifePalaceGanZhi } from './lib/astrolabe/GanZhi.js';
 import { CalculateTwelvePalaces } from './lib/astrolabe/palaces.js';
+import { GetFiveElementsClass } from './lib/astrolabe/FiveElements.js';
 
 export default {
     name: 'App',
@@ -117,6 +118,9 @@ export default {
             const lifePalaceInfo = CalculateLifePalaceGanZhi(lifePalaceIndex, ganzhi);
             const calculatedPalaces = CalculateTwelvePalaces(lifePalaceInfo, lifePalaceIndex, bodyPalaceIndex);
 
+            // 计算五行局
+            const wuxing = GetFiveElementsClass(lifePalaceInfo.heavenlyStem, lifePalaceInfo.earthlyBranch);
+
             // 地支到英文key的映射
             const branchToKey = {
                 '子': 'zi', '丑': 'chou', '寅': 'yin', '卯': 'mao',
@@ -155,7 +159,7 @@ export default {
                 centerInfo: {
                     name: formData.name || '无名氏', // 用户姓名
                     gender: formData.gender, // 性别：male/female
-                    wuxing: "木三局", // 五行局（暂时保持mock，后续计算）
+                    wuxing: wuxing, // 五行局
                     age: age, // 虚岁年龄
                     sizhu: sizhu, // 四柱（年月日时干支）
                     solarDate: solarBirthDate, // 阳历出生日期
