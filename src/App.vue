@@ -43,6 +43,7 @@ import { CalculateLifePalaceIndex, CalculateBodyPalaceIndex } from './lib/astrol
 import { CalculateLifePalaceGanZhi } from './lib/astrolabe/GanZhi.js';
 import { CalculateTwelvePalaces } from './lib/astrolabe/palaces.js';
 import { GetFiveElementsClass } from './lib/astrolabe/FiveElements.js';
+import { GetSoulAndBody } from './lib/astrolabe/SoulBody.js';
 
 export default {
     name: 'App',
@@ -121,6 +122,9 @@ export default {
             // 计算五行局
             const wuxing = GetFiveElementsClass(lifePalaceInfo.heavenlyStem, lifePalaceInfo.earthlyBranch);
 
+            // 计算命主星和身主星
+            const soulAndBody = GetSoulAndBody(lifePalace, ganzhi.yearly[1], bodyPalaceIndex);
+
             // 地支到英文key的映射
             const branchToKey = {
                 '子': 'zi', '丑': 'chou', '寅': 'yin', '卯': 'mao',
@@ -167,8 +171,8 @@ export default {
                     time: timeLabel, // 出生时辰描述
                     zodiac: zodiac, // 生肖
                     constellation: constellation, // 星座
-                    lifeMaster: "武曲", // 命主星（暂时mock，后续计算）
-                    bodyMaster: "文昌", // 身主星（暂时mock，后续计算）
+                    lifeMaster: soulAndBody.soul, // 命主星
+                    bodyMaster: soulAndBody.body, // 身主星
                     lifePalace: lifePalace, // 命宫地支
                     bodyPalace: bodyPalace // 身宫地支
                 }
