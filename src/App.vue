@@ -114,13 +114,18 @@ export default {
             const lifePalace = earthlyBranches[lifePalaceIndex];
             const bodyPalace = earthlyBranches[bodyPalaceIndex];
 
-            // 计算真正的十二宫天干地支
-
-            const lifePalaceInfo = CalculateLifePalaceGanZhi(lifePalaceIndex, ganzhi);
-            const calculatedPalaces = CalculateTwelvePalaces(lifePalaceInfo, lifePalaceIndex, bodyPalaceIndex);
-
             // 计算五行局
+            const lifePalaceInfo = CalculateLifePalaceGanZhi(lifePalaceIndex, ganzhi);
             const wuxing = GetFiveElementsClass(lifePalaceInfo.heavenlyStem, lifePalaceInfo.earthlyBranch);
+
+            // 计算真正的十二宫天干地支和主星分布
+            const calculatedPalaces = CalculateTwelvePalaces(
+                lifePalaceInfo,
+                lifePalaceIndex,
+                bodyPalaceIndex,
+                birthdayLunar.lunarDay,
+                wuxing
+            );
 
             // 计算命主星和身主星
             const soulAndBody = GetSoulAndBody(lifePalace, ganzhi.yearly[1], bodyPalaceIndex);
