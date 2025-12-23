@@ -5,8 +5,8 @@
 import { ZiweiStarSequence, TianfuStarSequence } from './constants';
 import type { MajorStarDistribution } from './types';
 import { FixIndex } from './utils';
-import { CalculateZiweiIndex } from './ziwei-calculator';
-import { CalculateTianfuIndex } from './tianfu-calculator';
+import { CalculateZiweiIndex } from './ZiWeiCalculator';
+import { CalculateTianfuIndex } from './TianFuCalculator';
 
 /**
  * 安紫微星系（6颗主星）

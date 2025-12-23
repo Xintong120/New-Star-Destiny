@@ -23,9 +23,9 @@ export {
 export { FixIndex } from './utils';
 
 // Export calculators
-export { CalculateZiweiIndex } from './ziwei-calculator';
-export { CalculateTianfuIndex } from './tianfu-calculator';
-export { CalculateMajorStarDistribution } from './distribution-calculator';
+export { CalculateZiweiIndex } from './ZiWeiCalculator';
+export { CalculateTianfuIndex } from './TianFuCalculator';
+export { CalculateMajorStarDistribution } from './DistributionCalculator';
 
 /**
  * 获取主星计算的详细信息（用于调试和文档）
