@@ -124,7 +124,11 @@ export default {
                 lifePalaceIndex,
                 bodyPalaceIndex,
                 birthdayLunar.lunarDay,
-                wuxing
+                wuxing,
+                ganzhi.yearly[0], // 年干
+                ganzhi.yearly[1], // 年支
+                birthdayLunar.lunarMonth, // 农历月份
+                timeIndex // 时辰索引
             );
 
             // 计算命主星和身主星
