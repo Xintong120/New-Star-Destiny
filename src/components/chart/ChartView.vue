@@ -42,6 +42,7 @@
                 :data="palace"
                 :index="index"
                 :grid-class="getGridPositionClass(index)"
+                :user-info="userInfo"
             ></palace-cell>
 
         </div>
@@ -82,6 +83,30 @@ export default {
             ];
         });
 
+        const userInfo = computed(() => {
+            const info = props.fullChartData.centerInfo;
+            // 从四柱中提取年干年支
+            const sizhuParts = info.sizhu.split(' ');
+            const yearly = sizhuParts[0] || '';
+            const heavenlyStem = yearly[0] || ''; // 年干
+            const earthlyBranch = yearly[1] || ''; // 年支
+
+            // 确定年支的阴阳属性
+            const yinYangMap = {
+                '子': '阳', '寅': '阳', '辰': '阳', '午': '阳', '申': '阳', '戌': '阳',
+                '丑': '阴', '卯': '阴', '巳': '阴', '未': '阴', '酉': '阴', '亥': '阴'
+            };
+            const yearBranchYinYang = yinYangMap[earthlyBranch] || '阳';
+
+            return {
+                heavenlyStem: heavenlyStem, // 年干
+                earthlyBranch: earthlyBranch, // 年支
+                gender: info.gender === 'male' ? '男' : '女', // 性别
+                fiveElementsClass: parseInt(info.wuxing.replace('局', '')), // 五行局数字
+                yearBranchYinYang: yearBranchYinYang // 年支阴阳
+            };
+        });
+
         const getGridPositionClass = (index) => {
             // grid position: 0-3 (row 1), 4 (row 2 col 4), 5 (row 3 col 4), 6-9 (row 4 reverse), 10 (row 3 col 1), 11 (row 2 col 1)
             // 这里使用通用的 col/row start, 配合 Tailwind 的 arbitrary value 可能会更灵活
@@ -114,7 +139,7 @@ export default {
             return '';
         };
 
-        return { uiGridOrder, getGridPositionClass };
+        return { uiGridOrder, userInfo, getGridPositionClass };
     }
 };
 </script>

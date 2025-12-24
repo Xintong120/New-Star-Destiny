@@ -60,10 +60,10 @@
         <footer class="mt-0.5 md:mt-2 border-t border-gray-100 pt-[1px] md:pt-1 px-0.5 md:px-2 pb-0.5 md:pb-2">
             <!-- 神煞: 极小字体 -->
             <div class="flex justify-between text-[0.35rem] md:text-[10px] text-gray-500 leading-none">
-                <span class="scale-90 origin-left">{{ data.gods.changSheng }}</span>
-                <span class="scale-90">{{ data.gods.boShi }}</span>
-                <span class="scale-90">{{ data.gods.jiangQian }}</span>
-                <span class="scale-90 origin-right">{{ data.gods.suiQian }}</span>
+                <span class="scale-90 origin-left">{{ calculatedGods.changSheng }}</span>
+                <span class="scale-90">{{ calculatedGods.boShi }}</span>
+                <span class="scale-90">{{ calculatedGods.jiangQian }}</span>
+                <span class="scale-90 origin-right">{{ calculatedGods.suiQian }}</span>
             </div>
 
             <div class="flex justify-between items-end mt-[1px] md:mt-0.5">
@@ -79,8 +79,74 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import {
+    GetChangshengTwelveArray,
+    GetDoctorTwelveArray,
+    GetJiangqianTwelveArray,
+    GetSuiqianTwelveArray
+} from '../../lib/stars/decorative/index.js';
+
 export default {
     name: 'PalaceCell',
-    props: ['data', 'index', 'gridClass']
+    props: ['data', 'index', 'gridClass', 'userInfo'],
+    setup(props) {
+        // 计算真正的装饰星
+        const calculatedGods = computed(() => {
+            if (!props.userInfo) {
+                return props.data.gods; // 如果没有用户信息，返回原有数据
+            }
+
+            const { heavenlyStem, earthlyBranch, gender, fiveElementsClass, yearBranchYinYang } = props.userInfo;
+
+            // 计算长生十二神
+            const changshengArray = GetChangshengTwelveArray({
+                fiveElementsClass: fiveElementsClass,
+                gender: gender,
+                yearBranchYinYang: yearBranchYinYang
+            });
+
+            // 计算博士十二神
+            const doctorArray = GetDoctorTwelveArray(heavenlyStem, earthlyBranch, gender);
+
+            // 计算岁前十二星
+            const suiqianArray = GetSuiqianTwelveArray({
+                yearBranchIndex: getYinIndex(earthlyBranch)
+            });
+
+            // 计算将前十二星
+            const jiangqianArray = GetJiangqianTwelveArray({
+                yearBranchIndex: getYinIndex(earthlyBranch)
+            });
+
+            // 获取当前宫位索引
+            const palaceIndex = getYinIndex(props.data.branch);
+
+            const result = {
+                changSheng: changshengArray[palaceIndex] || '',
+                boShi: doctorArray[palaceIndex] || '',
+                suiQian: suiqianArray[palaceIndex] || '',
+                jiangQian: jiangqianArray[palaceIndex] || ''
+            };
+
+            // 调试输出：宫位index、宫位名称、对应的将前12神
+            console.log(`宫位 ${props.index}: ${props.data.name}宫 (${props.data.branch}) - 将前12神: ${result.jiangQian}`);
+
+            return result;
+        });
+
+        // 地支转宫位索引（从寅宫开始）
+        function getYinIndex(branch) {
+            const palaceMap = {
+                '寅': 0, '卯': 1, '辰': 2, '巳': 3, '午': 4, '未': 5,
+                '申': 6, '酉': 7, '戌': 8, '亥': 9, '子': 10, '丑': 11
+            };
+            return palaceMap[branch] || 0;
+        }
+
+        return {
+            calculatedGods
+        };
+    }
 };
 </script>

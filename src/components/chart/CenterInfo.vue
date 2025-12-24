@@ -70,8 +70,35 @@
 </template>
 
 <script>
+import { watch } from 'vue';
+
 export default {
     name: 'CenterInfo',
-    props: ['info']
+    props: ['info'],
+    setup(props) {
+        // 调试输出个人信息
+        watch(() => props.info, (newInfo) => {
+            if (newInfo) {
+                console.log('=== 用户个人信息 ===');
+                console.log('姓名:', newInfo.name);
+                console.log('性别:', newInfo.gender === 'male' ? '男' : '女');
+                console.log('五行局:', newInfo.wuxing);
+                console.log('年龄:', newInfo.age, '岁');
+                console.log('生肖:', newInfo.zodiac);
+                console.log('星座:', newInfo.constellation);
+                console.log('命主星:', newInfo.lifeMaster);
+                console.log('身主星:', newInfo.bodyMaster);
+                console.log('四柱:', newInfo.sizhu);
+                console.log('阳历生日:', newInfo.solarDate);
+                console.log('农历生日:', newInfo.lunarDate);
+                console.log('出生时辰:', newInfo.time);
+                console.log('命宫:', newInfo.lifePalace);
+                console.log('身宫:', newInfo.bodyPalace);
+                console.log('===================');
+            }
+        }, { immediate: true });
+
+        return {};
+    }
 };
 </script>
