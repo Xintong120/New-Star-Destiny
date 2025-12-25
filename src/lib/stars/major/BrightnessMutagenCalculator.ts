@@ -6,7 +6,7 @@
  * - 提供主星亮度查询功能
  */
 
-import type { Brightness } from '../mutagen/types';
+import type { Brightness } from '../shared-types';
 import { BrightnessMap } from './constants';
 import { FixIndex } from './utils';
 

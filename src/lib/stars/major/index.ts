@@ -11,7 +11,7 @@ import { ZiweiStarSequence, TianfuStarSequence } from './constants';
 
 // Export types
 export type { MajorStarDistribution } from './types';
-export type { Brightness, Mutagen } from '../mutagen/types';
+export type { Brightness, Mutagen } from '../shared-types';
 
 // Export constants
 export {
@@ -21,7 +21,7 @@ export {
   BrightnessMap
 } from './constants';
 
-export { MutagenMap } from '../mutagen/types';
+export { MutagenMap } from '../shared-types';
 
 // Export utilities
 export { FixIndex } from './utils';

@@ -5,6 +5,9 @@
  * 支持主星和辅星的亮度计算
  */
 
+// 导出类型
+export type { Brightness } from '../shared-types';
+
 // 导出主星亮度相关
 export {
   GetMajorStarBrightness,
