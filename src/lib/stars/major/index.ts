@@ -21,7 +21,7 @@ export {
   BrightnessMap
 } from './constants';
 
-export { MutagenMap } from '../mutagen';
+export { MutagenMap } from '../mutagen/types';
 
 // Export utilities
 export { FixIndex } from './utils';
@@ -45,7 +45,7 @@ export {
   GetStarMutagen,
   GetMutagenStars,
   GetMutagenInfo
-} from '../mutagen';
+} from '../mutagen/calculator';
 
 /**
  * 获取主星计算的详细信息（用于调试和文档）
