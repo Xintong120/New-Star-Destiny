@@ -9,7 +9,7 @@
  * - 其他辅星（左辅、右弼、天魁、天钺、禄存、天马、地空、地劫等）无亮度数据
  */
 
-import type { Brightness } from '../../../types';
+import type { Brightness } from '../mutagen/types';
 
 /**
  * 辅星亮度映射表
