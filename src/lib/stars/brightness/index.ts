@@ -22,16 +22,3 @@ export {
   GetMinorStarBrightnessDistribution,
   GetMinorStarBrightnessInfo
 } from '../minor/BrightnessCalculator';
-
-// 导出类型
-export type { Brightness, Mutagen } from '../mutagen/types';
-
-// 导出常量
-export { MutagenMap } from '../mutagen/types';
-
-// 导出四化函数
-export {
-  GetStarMutagen,
-  GetMutagenStars,
-  GetMutagenInfo
-} from '../mutagen/calculator';

@@ -11,7 +11,7 @@ import { ZiweiStarSequence, TianfuStarSequence } from './constants';
 
 // Export types
 export type { MajorStarDistribution } from './types';
-export type { Brightness, Mutagen } from '../brightness';
+export type { Brightness, Mutagen } from '../mutagen/types';
 
 // Export constants
 export {
@@ -21,7 +21,7 @@ export {
   BrightnessMap
 } from './constants';
 
-export { MutagenMap } from '../brightness';
+export { MutagenMap } from '../mutagen/types';
 
 // Export utilities
 export { FixIndex } from './utils';
@@ -45,7 +45,7 @@ export {
   GetStarMutagen,
   GetMutagenStars,
   GetMutagenInfo
-} from '../brightness';
+} from '../mutagen/calculator';
 
 /**
  * 获取主星计算的详细信息（用于调试和文档）
