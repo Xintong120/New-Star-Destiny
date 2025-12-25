@@ -45,7 +45,7 @@ export {
   GetStarMutagen,
   GetMutagenStars,
   GetMutagenInfo
-} from '../mutagen/calculator';
+} from '../brightness';
 
 /**
  * 获取主星计算的详细信息（用于调试和文档）
