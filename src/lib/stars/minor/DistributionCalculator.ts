@@ -21,6 +21,7 @@ import {
   GetKongJieIndex,
   GetLuYangTuoMaIndex
 } from './index';
+import { GetStarMutagen } from '../major';
 
 /**
  * 辅星在宫位中的显示名称映射
@@ -48,12 +49,23 @@ const MinorStarDisplayNames: Record<string, string> = {
   'lu': '禄存',
   'yang': '擎羊',
   'tuo': '陀罗',
-  'ma': '天马', 
+  'ma': '天马',
   // 桃花星
   'peach': '桃花',
   // 博士
   'doctor': '博士'
 };
+
+/**
+ * 为辅星计算四化
+ *
+ * @param starName 辅星名称
+ * @param yearlyHeavenlyStem 年干
+ * @returns 四化类型或undefined
+ */
+function CalculateMinorStarMutagen(starName: string, yearlyHeavenlyStem: string): string | undefined {
+  return GetStarMutagen(starName, yearlyHeavenlyStem) || undefined;
+}
 
 /**
  * 计算所有辅星的分布
@@ -77,70 +89,118 @@ export function CalculateMinorStarDistribution(
     // 1. 天魁天钺 - 根据年干计算
     const kuiYueResult = GetKuiYueIndex(yearlyHeavenlyStem as any);
     if (distribution[kuiYueResult.kuiIndex]) {
-      distribution[kuiYueResult.kuiIndex].push({ name: MinorStarDisplayNames.kui });
+      distribution[kuiYueResult.kuiIndex].push({
+        name: MinorStarDisplayNames.kui,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.kui, yearlyHeavenlyStem)
+      });
     }
     if (distribution[kuiYueResult.yueIndex]) {
-      distribution[kuiYueResult.yueIndex].push({ name: MinorStarDisplayNames.yue });
+      distribution[kuiYueResult.yueIndex].push({
+        name: MinorStarDisplayNames.yue,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.yue, yearlyHeavenlyStem)
+      });
     }
 
     // 2. 左辅右弼 - 根据农历月份计算
     const zuoYouResult = GetZuoYouIndex(lunarMonth);
     if (distribution[zuoYouResult.zuoIndex]) {
-      distribution[zuoYouResult.zuoIndex].push({ name: MinorStarDisplayNames.zuo });
+      distribution[zuoYouResult.zuoIndex].push({
+        name: MinorStarDisplayNames.zuo,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.zuo, yearlyHeavenlyStem)
+      });
     }
     if (distribution[zuoYouResult.youIndex]) {
-      distribution[zuoYouResult.youIndex].push({ name: MinorStarDisplayNames.you });
+      distribution[zuoYouResult.youIndex].push({
+        name: MinorStarDisplayNames.you,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.you, yearlyHeavenlyStem)
+      });
     }
 
     // 3. 文昌文曲 - 根据时辰计算
     const changQuResult = GetChangQuIndex(timeIndex);
     if (distribution[changQuResult.changIndex]) {
-      distribution[changQuResult.changIndex].push({ name: MinorStarDisplayNames.chang });
+      distribution[changQuResult.changIndex].push({
+        name: MinorStarDisplayNames.chang,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.chang, yearlyHeavenlyStem)
+      });
     }
     if (distribution[changQuResult.quIndex]) {
-      distribution[changQuResult.quIndex].push({ name: MinorStarDisplayNames.qu });
+      distribution[changQuResult.quIndex].push({
+        name: MinorStarDisplayNames.qu,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.qu, yearlyHeavenlyStem)
+      });
     }
 
     // 4. 孤辰寡宿 - 根据年支计算
     const guGuaResult = GetGuGuaIndex(yearlyEarthlyBranch);
     if (distribution[guGuaResult.guchenIndex]) {
-      distribution[guGuaResult.guchenIndex].push({ name: MinorStarDisplayNames.guchen });
+      distribution[guGuaResult.guchenIndex].push({
+        name: MinorStarDisplayNames.guchen,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.guchen, yearlyHeavenlyStem)
+      });
     }
     if (distribution[guGuaResult.guasuIndex]) {
-      distribution[guGuaResult.guasuIndex].push({ name: MinorStarDisplayNames.guas });
+      distribution[guGuaResult.guasuIndex].push({
+        name: MinorStarDisplayNames.guas,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.guas, yearlyHeavenlyStem)
+      });
     }
 
     // 5. 火星铃星 - 根据年支和时辰计算
     const huoLingResult = GetHuoLingIndex(yearlyEarthlyBranch, timeIndex);
     if (distribution[huoLingResult.huoIndex]) {
-      distribution[huoLingResult.huoIndex].push({ name: MinorStarDisplayNames.huo });
+      distribution[huoLingResult.huoIndex].push({
+        name: MinorStarDisplayNames.huo,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.huo, yearlyHeavenlyStem)
+      });
     }
     if (distribution[huoLingResult.lingIndex]) {
-      distribution[huoLingResult.lingIndex].push({ name: MinorStarDisplayNames.ling });
+      distribution[huoLingResult.lingIndex].push({
+        name: MinorStarDisplayNames.ling,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.ling, yearlyHeavenlyStem)
+      });
     }
 
     // 6. 地空地劫 - 根据时辰计算
     const kongJieResult = GetKongJieIndex(timeIndex);
     if (distribution[kongJieResult.kongIndex]) {
-      distribution[kongJieResult.kongIndex].push({ name: MinorStarDisplayNames.kong });
+      distribution[kongJieResult.kongIndex].push({
+        name: MinorStarDisplayNames.kong,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.kong, yearlyHeavenlyStem)
+      });
     }
     if (distribution[kongJieResult.jieIndex]) {
-      distribution[kongJieResult.jieIndex].push({ name: MinorStarDisplayNames.jie });
+      distribution[kongJieResult.jieIndex].push({
+        name: MinorStarDisplayNames.jie,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.jie, yearlyHeavenlyStem)
+      });
     }
 
     // 7. 禄羊陀马 - 根据年干和年支计算
     const luYangTuoMaResult = GetLuYangTuoMaIndex(yearlyHeavenlyStem, yearlyEarthlyBranch);
     if (distribution[luYangTuoMaResult.luIndex]) {
-      distribution[luYangTuoMaResult.luIndex].push({ name: MinorStarDisplayNames.lu });
+      distribution[luYangTuoMaResult.luIndex].push({
+        name: MinorStarDisplayNames.lu,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.lu, yearlyHeavenlyStem)
+      });
     }
     if (distribution[luYangTuoMaResult.yangIndex]) {
-      distribution[luYangTuoMaResult.yangIndex].push({ name: MinorStarDisplayNames.yang });
+      distribution[luYangTuoMaResult.yangIndex].push({
+        name: MinorStarDisplayNames.yang,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.yang, yearlyHeavenlyStem)
+      });
     }
     if (distribution[luYangTuoMaResult.tuoIndex]) {
-      distribution[luYangTuoMaResult.tuoIndex].push({ name: MinorStarDisplayNames.tuo });
+      distribution[luYangTuoMaResult.tuoIndex].push({
+        name: MinorStarDisplayNames.tuo,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.tuo, yearlyHeavenlyStem)
+      });
     }
     if (distribution[luYangTuoMaResult.maIndex]) {
-      distribution[luYangTuoMaResult.maIndex].push({ name: MinorStarDisplayNames.ma });
+      distribution[luYangTuoMaResult.maIndex].push({
+        name: MinorStarDisplayNames.ma,
+        sihua: CalculateMinorStarMutagen(MinorStarDisplayNames.ma, yearlyHeavenlyStem)
+      });
     }
 
     // 桃花星已被移除

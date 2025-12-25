@@ -15,6 +15,7 @@ src/lib/stars/minor/
 ├── HuoLing.ts              # 火星铃星计算器
 ├── KongJie.ts              # 地空地劫计算器
 ├── LuYangTuoMa.ts          # 禄羊陀马计算器
+├── BrightnessCalculator.ts # 辅星亮度计算器
 ├── PeachBlossomStars.ts    # 桃花星系计算器
 ├── DoctorTwelve.ts         # 博士十二神计算器
 └── README.md               # 模块说明
@@ -74,6 +75,17 @@ src/lib/stars/minor/
   - 根据年支计算禄存、羊刃、陀罗、火星位置
   - 禄存按天干禄位计算，羊刃为对宫
   - 返回四星的宫位索引
+
+#### 辅星亮度系列
+- **`BrightnessCalculator.ts`** - 辅星亮度计算
+  - 提供辅星的庙旺得利平不陷亮度查询
+  - 仅6个辅星有亮度数据：文昌、文曲、火星、铃星、擎羊、陀罗
+  - 其他辅星（左辅、右弼、天魁、天钺、禄存、天马、地空、地劫等）无亮度数据
+  - 返回亮度值或空字符串
+  - `GetMinorStarBrightness()`: 获取单个辅星亮度
+  - `HasMinorStarBrightness()`: 检查辅星是否有亮度数据
+  - `GetMinorStarsWithBrightness()`: 获取所有有亮度数据的辅星列表
+  - `GetMinorStarBrightnessDistribution()`: 获取辅星在所有宫位的亮度分布
 
 #### 桃花星系列
 - **`PeachBlossomStars.ts`** - 桃花星位置计算

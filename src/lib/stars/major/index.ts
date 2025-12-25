@@ -11,13 +11,17 @@ import { ZiweiStarSequence, TianfuStarSequence } from './constants';
 
 // Export types
 export type { MajorStarDistribution } from './types';
+export type { Brightness, Mutagen } from '../mutagen/types';
 
 // Export constants
 export {
   FiveElementsValues,
   ZiweiStarSequence,
-  TianfuStarSequence
+  TianfuStarSequence,
+  BrightnessMap
 } from './constants';
+
+export { MutagenMap } from '../mutagen';
 
 // Export utilities
 export { FixIndex } from './utils';
@@ -26,6 +30,22 @@ export { FixIndex } from './utils';
 export { CalculateZiweiIndex } from './ZiWeiCalculator';
 export { CalculateTianfuIndex } from './TianFuCalculator';
 export { CalculateMajorStarDistribution } from './DistributionCalculator';
+
+// Export brightness functions
+export {
+  GetMajorStarBrightness,
+  HasMajorStarBrightness,
+  GetMajorStarsWithBrightness,
+  GetMajorStarBrightnessDistribution,
+  GetMajorStarBrightnessInfo
+} from './BrightnessMutagenCalculator';
+
+// Export mutagen functions
+export {
+  GetStarMutagen,
+  GetMutagenStars,
+  GetMutagenInfo
+} from '../mutagen';
 
 /**
  * 获取主星计算的详细信息（用于调试和文档）

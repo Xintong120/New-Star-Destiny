@@ -3,7 +3,7 @@
  */
 
 // 类型导出
-export type { HeavenlyStemName, EarthlyBranchName } from './types';
+export type { HeavenlyStemName, EarthlyBranchName, Brightness } from './types';
 
 // 模块导出
 export * from './KuiYue';
@@ -13,6 +13,7 @@ export * from './GuGua';
 export * from './HuoLing';
 export * from './KongJie';
 export * from './LuYangTuoMa';
+export * from './BrightnessCalculator';
 
 
 

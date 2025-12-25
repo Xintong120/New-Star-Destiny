@@ -29,11 +29,19 @@
             <div class="flex flex-col gap-0 md:gap-1 w-1/2 pr-[1px]">
                  <div class="flex flex-wrap content-start">
                     <!-- 辅星: 手机端 text-[0.4rem] 甚至更小，使用 scale 缩放以保证清晰度 -->
-                    <span v-for="star in data.minorStars" :key="star.name" class="text-[0.4rem] md:text-xs text-gray-700 leading-tight transform scale-90 md:scale-100 origin-left whitespace-nowrap">
-                        {{ star.name }}<span v-if="star.sihua" class="text-[0.3rem] bg-blue-100 text-blue-800 px-[1px] rounded ml-[1px]">{{ star.sihua }}</span>
-                    </span>
+                    <div v-for="star in data.minorStars" :key="star.name" class="flex flex-col items-start">
+                        <span class="text-[0.4rem] md:text-xs text-gray-700 leading-tight transform scale-90 md:scale-100 origin-left whitespace-nowrap">
+                            {{ star.name }}
+                        </span>
+                        <!-- 庙旺利陷 & 四化 -->
+                        <div class="flex items-center gap-[1px] mt-[1px]">
+                            <span v-if="star.brightness && star.brightness !== ''" class="text-[0.3rem] md:text-[8px] text-gray-400 scale-75 md:scale-90 origin-left">{{ star.brightness }}</span>
+                            <span v-if="star.mutagen" class="text-[0.3rem] md:text-[8px] font-bold text-white bg-blue-600 px-[1px] rounded scale-75 md:scale-90 origin-left">{{ star.mutagen }}</span>
+                        </div>
+                    </div>
                  </div>
                  <div class="flex flex-wrap mt-0.5 md:mt-2">
+                    <!-- 杂曜 -->
                     <span v-for="star in data.miscStars" :key="star" class="text-[0.35rem] md:text-[10px] text-gray-400 scale-75 md:scale-95 origin-left whitespace-nowrap leading-none">
                         {{ star }}
                     </span>
@@ -50,7 +58,7 @@
                     <!-- 庙旺利陷 & 四化 -->
                     <div class="flex items-center gap-[1px] md:gap-0.5 mt-[1px] md:mt-0.5">
                         <span class="text-[0.35rem] md:text-[9px] text-gray-400 scale-75 md:scale-90 origin-right">{{ star.brightness }}</span>
-                        <span v-if="star.sihua" class="text-[0.35rem] md:text-[9px] font-bold text-white bg-red-600 px-[1px] md:px-0.5 rounded-[1px] md:rounded-sm scale-75 md:scale-90 origin-right">{{ star.sihua }}</span>
+                        <span v-if="star.mutagen" class="text-[0.35rem] md:text-[9px] font-bold text-white bg-red-600 px-[1px] md:px-0.5 rounded-[1px] md:rounded-sm scale-75 md:scale-90 origin-right">{{ star.mutagen }}</span>
                     </div>
                 </div>
             </div>
@@ -85,7 +93,7 @@ import {
     GetDoctorTwelveArray,
     GetJiangqianTwelveArray,
     GetSuiqianTwelveArray
-} from '../../lib/stars/decorative/index.js';
+} from '../../lib/stars/48-ShenSha/index.js';
 
 export default {
     name: 'PalaceCell',

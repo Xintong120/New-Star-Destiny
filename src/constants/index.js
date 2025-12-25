@@ -48,7 +48,7 @@ const MockFullChartData = {
             ageRange: '54-63'
         },
         { id: 'yin', name: '子女', stem: '庚', branch: '寅', majorStars: [{name:'廉贞', brightness:'利', sihua:'忌'}], minorStars: [{name:'文昌', sihua:'科'}], miscStars: [], gods: { changSheng: '死', boShi: '伏兵', jiangQian: '指背', suiQian: '月煞' }, ageRange: '44-53' },
-        { id: 'mao', name: '夫妻', stem: '辛', branch: '卯', majorStars: [], minorStars: [{name:'禄存'}, {name:'天官'}], miscStars: ['台辅'], gods: { changSheng: '病', boShi: '官府', jiangQian: '咸池', suiQian: '亡神' }, ageRange: '34-43' },
+        { id: 'mao', name: '夫妻', stem: '辛', branch: '卯', majorStars: [], minorStars: [{name:'禄存'}, {name:'天官'}], miscStars: [], gods: { changSheng: '病', boShi: '官府', jiangQian: '咸池', suiQian: '亡神' }, ageRange: '34-43' },
         { id: 'chen', name: '兄弟', stem: '壬', branch: '辰', majorStars: [{name:'破军', brightness:'旺', sihua:'权'}], minorStars: [{name:'陀罗'}], miscStars: [], gods: { changSheng: '衰', boShi: '博士', jiangQian: '月煞', suiQian: '将星' }, ageRange: '24-33' },
         { id: 'si', name: '命宫', stem: '辛', branch: '巳', majorStars: [{name:'紫微', brightness:'庙', sihua:'权'}, {name:'七杀', brightness:'平'}], minorStars: [{name:'地劫'}, {name:'天马'}], miscStars: ['天贵'], gods: { changSheng: '帝旺', boShi: '力士', jiangQian: '亡神', suiQian: '攀鞍' }, ageRange: '14-23' },
         { id: 'wu', name: '父母', stem: '壬', branch: '午', majorStars: [{name:'天机', brightness:'陷'}], minorStars: [{name:'擎羊'}], miscStars: [], gods: { changSheng: '临官', boShi: '青龙', jiangQian: '将星', suiQian: '岁建' }, ageRange: '4-13' },

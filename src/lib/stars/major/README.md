@@ -6,14 +6,15 @@
 
 ```
 src/lib/stars/major/
-├── constants.ts              # 常量定义（五行局映射、星耀序列）
-├── types.ts                  # 类型定义（主星分布结果类型）
-├── utils.ts                  # 工具函数（索引循环修正）
-├── ziwei-calculator.ts       # 紫微星定位计算器
-├── tianfu-calculator.ts      # 天府星定位计算器
-├── distribution-calculator.ts # 主星分布计算器
-├── index.ts                  # 统一导出接口
-└── README.md                 # 模块文档
+├── constants.ts                    # 常量定义（五行局映射、星耀序列、亮度四化数据）
+├── types.ts                        # 类型定义（主星分布结果、亮度四化类型）
+├── utils.ts                        # 工具函数（索引循环修正）
+├── ziwei-calculator.ts             # 紫微星定位计算器
+├── tianfu-calculator.ts            # 天府星定位计算器
+├── distribution-calculator.ts       # 主星分布计算器
+├── brightness-mutagen-calculator.ts # 亮度和四化计算器
+├── index.ts                        # 统一导出接口
+└── README.md                       # 模块文档
 ```
 
 ## 文件作用说明
@@ -22,6 +23,8 @@ src/lib/stars/major/
 - `FiveElementsValues`: 五行局数值映射表（水二局=2，木三局=3等）
 - `ZiweiStarSequence`: 紫微星系6颗主星的排列顺序
 - `TianfuStarSequence`: 天府星系8颗主星的排列顺序
+- `BrightnessMap`: 14颗主星的亮度表（庙、旺、得、利、平、不、陷）
+- `MutagenMap`: 天干四化表（禄、权、科、忌对应星曜）
 
 ### **types.ts** - 类型定义
 - `MajorStarDistribution`: 主星分布结果类型（12宫位数组，每个宫位包含星曜名称数组）
@@ -41,6 +44,13 @@ src/lib/stars/major/
 - `CalculateMajorStarDistribution`: 计算14颗主星在12宫的完整分布
 - `PlaceZiweiStars`: 安置紫微星系主星（逆时针分布）
 - `PlaceTianfuStars`: 安置天府星系主星（顺时针分布）
+
+### **brightness-mutagen-calculator.ts** - 亮度和四化计算器
+- `GetStarBrightness`: 获取星曜在指定宫位的亮度（庙、旺、得、利、平、不、陷）
+- `GetStarMutagen`: 获取星曜的四化（禄、权、科、忌）
+- `GetMutagenStars`: 获取指定天干的四化星曜
+- `EnrichStarsWithAttributes`: 批量为星曜添加亮度和四化属性
+- `GetBrightnessMutagenInfo`: 获取模块信息和元数据
 
 ### **index.ts** - 统一导出接口
 - 导出所有类型、常量、工具函数和计算器

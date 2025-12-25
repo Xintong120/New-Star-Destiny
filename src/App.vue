@@ -126,7 +126,7 @@ export default {
                 birthdayLunar.lunarDay,
                 wuxing,
                 ganzhi.yearly[0], // 年干
-                ganzhi.yearly[1], // 年支
+                ganzhi.yearly[1], // 年支（中文字符）
                 birthdayLunar.lunarMonth, // 农历月份
                 timeIndex // 时辰索引
             );
@@ -151,7 +151,7 @@ export default {
                     branch: palace.earthlyBranch,
                     majorStars: palace.majorStars || [],
                     minorStars: palace.minorStars || [],
-                    miscStars: mockPalace ? mockPalace.miscStars : [],
+                    miscStars: palace.miscStars || [],
                     gods: mockPalace ? mockPalace.gods : {},
                     ageRange: mockPalace ? mockPalace.ageRange : ''
                 };
