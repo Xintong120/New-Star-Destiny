@@ -10,4 +10,5 @@ export interface Palace {
   isBodyPalace: boolean;
   majorStars?: PalaceStar[];
   minorStars?: PalaceStar[];
+  miscStars?: string[];
 }
