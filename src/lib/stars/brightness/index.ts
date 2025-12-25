@@ -24,4 +24,7 @@ export {
 } from '../minor/BrightnessCalculator';
 
 // 导出类型
-export type { Brightness } from '../mutagen/types';
+export type { Brightness, Mutagen } from '../mutagen/types';
+
+// 导出常量
+export { MutagenMap } from '../mutagen/types';
