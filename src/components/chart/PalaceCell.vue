@@ -37,6 +37,8 @@
                         <div class="flex items-center gap-[1px] mt-[1px] ml-[2px]">
                             <span v-if="star.brightness && star.brightness !== ''" class="text-[0.3rem] md:text-[8px] text-gray-400 scale-75 md:scale-90 origin-left">{{ star.brightness }}</span>
                             <span v-if="star.mutagen" class="text-[0.3rem] md:text-[8px] font-bold text-white bg-red-600 px-[1px] rounded scale-75 md:scale-90 origin-left">{{ star.mutagen }}</span>
+                            <span v-if="decadalMutagen" class="text-[0.3rem] md:text-[8px] font-bold text-white bg-green-600 px-[1px] rounded scale-75 md:scale-90 origin-left">{{ decadalMutagen }}</span>
+                            <span v-if="yearlyMutagen" class="text-[0.3rem] md:text-[8px] font-bold text-white bg-blue-600 px-[1px] rounded scale-75 md:scale-90 origin-left">{{ yearlyMutagen }}</span>
                         </div>
                     </div>
                  </div>
@@ -59,26 +61,14 @@
                     <div class="flex items-center gap-[1px] md:gap-0.5 mt-[1px] md:mt-0.5">
                         <span class="text-[0.35rem] md:text-[9px] text-gray-400 scale-75 md:scale-90 origin-right">{{ star.brightness }}</span>
                         <span v-if="star.mutagen" class="text-[0.35rem] md:text-[9px] font-bold text-white bg-red-600 px-[1px] md:px-0.5 rounded-[1px] md:rounded-sm scale-75 md:scale-90 origin-right">{{ star.mutagen }}</span>
+                        <span v-if="decadalMutagen" class="text-[0.35rem] md:text-[9px] font-bold text-white bg-green-600 px-[1px] md:px-0.5 rounded-[1px] md:rounded-sm scale-75 md:scale-90 origin-right">{{ decadalMutagen }}</span>
+                        <span v-if="yearlyMutagen" class="text-[0.35rem] md:text-[9px] font-bold text-white bg-blue-600 px-[1px] md:px-0.5 rounded-[1px] md:rounded-sm scale-75 md:scale-90 origin-right">{{ yearlyMutagen }}</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 动态四化区域 -->
-        <div v-if="decadalMutagen || yearlyMutagen" class="mt-[1px] md:mt-0.5 px-0.5 md:px-1 flex flex-wrap gap-[1px] md:gap-0.5">
-            <span
-                v-if="decadalMutagen"
-                class="text-[0.35rem] md:text-[10px] font-bold px-[1px] rounded-[1px] leading-none text-white bg-green-600"
-            >
-                {{ decadalMutagen }}
-            </span>
-            <span
-                v-if="yearlyMutagen"
-                class="text-[0.35rem] md:text-[10px] font-bold px-[1px] rounded-[1px] leading-none text-white bg-blue-600"
-            >
-                {{ yearlyMutagen }}
-            </span>
-        </div>
+
 
         <!-- 流曜星区域 -->
         <div v-if="flowingStars && flowingStars.length > 0" class="mt-[1px] md:mt-0.5 px-0.5 md:px-1 flex flex-wrap gap-[1px] md:gap-0.5">
