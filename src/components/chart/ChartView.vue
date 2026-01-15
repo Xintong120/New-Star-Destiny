@@ -107,7 +107,7 @@ export default {
 
         const uiGridOrder = computed(() => {
             /* 十二地支固定顺序: 寅卯辰巳午未申酉戌亥子丑 */
-            const p = (branch) => props.fullChartData.palaces.find(x => x.branch === branch);
+            const p = (branch) => props.fullChartData.palaces.find(x => x.earthlyBranch === branch);
             return [
                 p('寅'), p('卯'), p('辰'), p('巳'), // Left(bottom to top) ↑
                 p('午'),                         // Right Top →

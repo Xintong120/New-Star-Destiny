@@ -32,7 +32,7 @@ const MockFullChartData = {
     },
     palaces: [
         {
-            id: 'zi', name: '疾厄', stem: '戊', branch: '子',
+            id: 'zi', name: '疾厄', heavenlyStem: '戊', earthlyBranch: '子',
             majorStars: [],
             minorStars: [{name:'火星', sihua:''}, {name:'天哭'}],
             miscStars: ['天德', '解神'],
@@ -40,23 +40,23 @@ const MockFullChartData = {
             ageRange: '64-73'
         },
         {
-            id: 'chou', name: '财帛', stem: '己', branch: '丑',
+            id: 'chou', name: '财帛', heavenlyStem: '己', earthlyBranch: '丑',
             majorStars: [{name:'太阴', brightness:'庙', sihua:'科'}],
             minorStars: [{name:'天喜'}],
             miscStars: ['三台', '八座'],
             gods: { changSheng: '墓', boShi: '大耗', jiangQian: '天煞', suiQian: '咸池' },
             ageRange: '54-63'
         },
-        { id: 'yin', name: '子女', stem: '庚', branch: '寅', majorStars: [{name:'廉贞', brightness:'利', sihua:'忌'}], minorStars: [{name:'文昌', sihua:'科'}], miscStars: [], gods: { changSheng: '死', boShi: '伏兵', jiangQian: '指背', suiQian: '月煞' }, ageRange: '44-53' },
-        { id: 'mao', name: '夫妻', stem: '辛', branch: '卯', majorStars: [], minorStars: [{name:'禄存'}, {name:'天官'}], miscStars: [], gods: { changSheng: '病', boShi: '官府', jiangQian: '咸池', suiQian: '亡神' }, ageRange: '34-43' },
-        { id: 'chen', name: '兄弟', stem: '壬', branch: '辰', majorStars: [{name:'破军', brightness:'旺', sihua:'权'}], minorStars: [{name:'陀罗'}], miscStars: [], gods: { changSheng: '衰', boShi: '博士', jiangQian: '月煞', suiQian: '将星' }, ageRange: '24-33' },
-        { id: 'si', name: '命宫', stem: '辛', branch: '巳', majorStars: [{name:'紫微', brightness:'庙', sihua:'权'}, {name:'七杀', brightness:'平'}], minorStars: [{name:'地劫'}, {name:'天马'}], miscStars: ['天贵'], gods: { changSheng: '帝旺', boShi: '力士', jiangQian: '亡神', suiQian: '攀鞍' }, ageRange: '14-23' },
-        { id: 'wu', name: '父母', stem: '壬', branch: '午', majorStars: [{name:'天机', brightness:'陷'}], minorStars: [{name:'擎羊'}], miscStars: [], gods: { changSheng: '临官', boShi: '青龙', jiangQian: '将星', suiQian: '岁建' }, ageRange: '4-13' },
-        { id: 'wei', name: '福德', stem: '癸', branch: '未', majorStars: [], minorStars: [{name:'左辅', sihua:'科'}, {name:'右弼'}], miscStars: [], gods: { changSheng: '冠带', boShi: '小耗', jiangQian: '攀鞍', suiQian: '晦气' }, ageRange: '114-123' },
-        { id: 'shen', name: '田宅', stem: '甲', branch: '申', majorStars: [{name:'太阳', brightness:'旺', sihua:'忌'}, {name:'巨门', brightness:'庙'}], minorStars: [], miscStars: ['凤阁'], gods: { changSheng: '沐浴', boShi: '将军', jiangQian: '岁建', suiQian: '丧门' }, ageRange: '104-113' },
-        { id: 'you', name: '官禄', stem: '乙', branch: '酉', majorStars: [{name:'武曲', brightness:'庙'}, {name:'贪狼', brightness:'庙', sihua:'禄'}], minorStars: [{name:'文曲'}], miscStars: [], gods: { changSheng: '长生', boShi: '奏书', jiangQian: '晦气', suiQian: '贯索' }, ageRange: '94-103' },
-        { id: 'xu', name: '奴仆', stem: '丙', branch: '戌', majorStars: [{name:'天同', brightness:'平', sihua:'禄'}], minorStars: [{name:'红鸾'}], miscStars: [], gods: { changSheng: '养', boShi: '飞廉', jiangQian: '丧门', suiQian: '官符' }, ageRange: '84-93' },
-        { id: 'hai', name: '迁移', stem: '丁', branch: '亥', majorStars: [{name:'天府', brightness:'得'}], minorStars: [{name:'天魁'}], miscStars: [], gods: { changSheng: '胎', boShi: '喜神', jiangQian: '贯索', suiQian: '小耗' }, ageRange: '74-83' },
+        { id: 'yin', name: '子女', heavenlyStem: '庚', earthlyBranch: '寅', majorStars: [{name:'廉贞', brightness:'利', sihua:'忌'}], minorStars: [{name:'文昌', sihua:'科'}], miscStars: [], gods: { changSheng: '死', boShi: '伏兵', jiangQian: '指背', suiQian: '月煞' }, ageRange: '44-53' },
+        { id: 'mao', name: '夫妻', heavenlyStem: '辛', earthlyBranch: '卯', majorStars: [], minorStars: [{name:'禄存'}, {name:'天官'}], miscStars: [], gods: { changSheng: '病', boShi: '官府', jiangQian: '咸池', suiQian: '亡神' }, ageRange: '34-43' },
+        { id: 'chen', name: '兄弟', heavenlyStem: '壬', earthlyBranch: '辰', majorStars: [{name:'破军', brightness:'旺', sihua:'权'}], minorStars: [{name:'陀罗'}], miscStars: [], gods: { changSheng: '衰', boShi: '博士', jiangQian: '月煞', suiQian: '将星' }, ageRange: '24-33' },
+        { id: 'si', name: '命宫', heavenlyStem: '辛', earthlyBranch: '巳', majorStars: [{name:'紫微', brightness:'庙', sihua:'权'}, {name:'七杀', brightness:'平'}], minorStars: [{name:'地劫'}, {name:'天马'}], miscStars: ['天贵'], gods: { changSheng: '帝旺', boShi: '力士', jiangQian: '亡神', suiQian: '攀鞍' }, ageRange: '14-23' },
+        { id: 'wu', name: '父母', heavenlyStem: '壬', earthlyBranch: '午', majorStars: [{name:'天机', brightness:'陷'}], minorStars: [{name:'擎羊'}], miscStars: [], gods: { changSheng: '临官', boShi: '青龙', jiangQian: '将星', suiQian: '岁建' }, ageRange: '4-13' },
+        { id: 'wei', name: '福德', heavenlyStem: '癸', earthlyBranch: '未', majorStars: [], minorStars: [{name:'左辅', sihua:'科'}, {name:'右弼'}], miscStars: [], gods: { changSheng: '冠带', boShi: '小耗', jiangQian: '攀鞍', suiQian: '晦气' }, ageRange: '114-123' },
+        { id: 'shen', name: '田宅', heavenlyStem: '甲', earthlyBranch: '申', majorStars: [{name:'太阳', brightness:'旺', sihua:'忌'}, {name:'巨门', brightness:'庙'}], minorStars: [], miscStars: ['凤阁'], gods: { changSheng: '沐浴', boShi: '将军', jiangQian: '岁建', suiQian: '丧门' }, ageRange: '104-113' },
+        { id: 'you', name: '官禄', heavenlyStem: '乙', earthlyBranch: '酉', majorStars: [{name:'武曲', brightness:'庙'}, {name:'贪狼', brightness:'庙', sihua:'禄'}], minorStars: [{name:'文曲'}], miscStars: [], gods: { changSheng: '长生', boShi: '奏书', jiangQian: '晦气', suiQian: '贯索' }, ageRange: '94-103' },
+        { id: 'xu', name: '奴仆', heavenlyStem: '丙', earthlyBranch: '戌', majorStars: [{name:'天同', brightness:'平', sihua:'禄'}], minorStars: [{name:'红鸾'}], miscStars: [], gods: { changSheng: '养', boShi: '飞廉', jiangQian: '丧门', suiQian: '官符' }, ageRange: '84-93' },
+        { id: 'hai', name: '迁移', heavenlyStem: '丁', earthlyBranch: '亥', majorStars: [{name:'天府', brightness:'得'}], minorStars: [{name:'天魁'}], miscStars: [], gods: { changSheng: '胎', boShi: '喜神', jiangQian: '贯索', suiQian: '小耗' }, ageRange: '74-83' },
     ]
 };
 

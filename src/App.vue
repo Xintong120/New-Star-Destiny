@@ -143,12 +143,12 @@ export default {
 
             // 将计算的palaces转换为mock格式
             const palaces = calculatedPalaces.map((palace, index) => {
-                const mockPalace = MockFullChartData.palaces.find(p => p.branch === palace.earthlyBranch);
+                const mockPalace = MockFullChartData.palaces.find(p => p.earthlyBranch === palace.earthlyBranch);
                 return {
                     id: branchToKey[palace.earthlyBranch],
                     name: palace.name,
-                    stem: palace.heavenlyStem,
-                    branch: palace.earthlyBranch,
+                    heavenlyStem: palace.heavenlyStem,
+                    earthlyBranch: palace.earthlyBranch,
                     majorStars: palace.majorStars || [],
                     minorStars: palace.minorStars || [],
                     miscStars: palace.miscStars || [],
@@ -160,7 +160,7 @@ export default {
             // 在控制台输出十二宫位天干地支信息
             console.log('=== 十二宫位天干地支计算结果 ===');
             palaces.forEach((palace, index) => {
-                console.log(`${index}: ${palace.name}宫 - ${palace.stem}${palace.branch} (${palace.id})`);
+                console.log(`${index}: ${palace.name}宫 - ${palace['heavenlyStem']}${palace['earthlyBranch']} (${palace.id})`);
             });
             console.log('================================');
 

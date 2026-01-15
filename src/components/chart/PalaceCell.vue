@@ -8,9 +8,9 @@
         <header class="flex justify-between items-start mb-0.5 md:mb-1 p-1 md:p-2">
             <div class="flex flex-col items-center">
                  <!-- 天干: 移动端极小字体 -->
-                 <span class="text-[0.5rem] md:text-xs text-gray-500 font-serif leading-none scale-90 md:scale-100 origin-center">{{ data.stem }}</span>
+                 <span class="text-[0.5rem] md:text-xs text-gray-500 font-serif leading-none scale-90 md:scale-100 origin-center">{{ data['heavenlyStem'] }}</span>
                  <!-- 地支 -->
-                 <span class="text-[0.5rem] md:text-sm font-bold bg-black text-white w-3 h-3 md:w-5 md:h-5 flex items-center justify-center rounded-[1px] md:rounded-sm mt-0.5 leading-none">{{ data.branch }}</span>
+                 <span class="text-[0.5rem] md:text-sm font-bold bg-black text-white w-3 h-3 md:w-5 md:h-5 flex items-center justify-center rounded-[1px] md:rounded-sm mt-0.5 leading-none">{{ data['earthlyBranch'] }}</span>
             </div>
 
             <div class="flex flex-col items-end">
@@ -165,7 +165,7 @@ export default {
             });
 
             // 获取当前宫位索引
-            const palaceIndex = getYinIndex(props.data.branch);
+            const palaceIndex = getYinIndex(props.data['earthlyBranch']);
 
             const result = {
                 changSheng: changshengArray[palaceIndex] || '',
@@ -175,7 +175,7 @@ export default {
             };
 
             // 调试输出：宫位index、宫位名称、对应的将前12神
-            console.log(`宫位 ${props.index}: ${props.data.name}宫 (${props.data.branch}) - 将前12神: ${result.jiangQian}`);
+            console.log(`宫位 ${props.index}: ${props.data.name}宫 (${props.data['earthlyBranch']}) - 将前12神: ${result.jiangQian}`);
 
             return result;
         });
