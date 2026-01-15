@@ -34,9 +34,9 @@
                             {{ star.name }}
                         </span>
                         <!-- 庙旺利陷 & 四化 -->
-                        <div class="flex items-center gap-[1px] mt-[1px]">
+                        <div class="flex items-center gap-[1px] mt-[1px] ml-[2px]">
                             <span v-if="star.brightness && star.brightness !== ''" class="text-[0.3rem] md:text-[8px] text-gray-400 scale-75 md:scale-90 origin-left">{{ star.brightness }}</span>
-                            <span v-if="star.mutagen" class="text-[0.3rem] md:text-[8px] font-bold text-white bg-blue-600 px-[1px] rounded scale-75 md:scale-90 origin-left">{{ star.mutagen }}</span>
+                            <span v-if="star.mutagen" class="text-[0.3rem] md:text-[8px] font-bold text-white bg-red-600 px-[1px] rounded scale-75 md:scale-90 origin-left">{{ star.mutagen }}</span>
                         </div>
                     </div>
                  </div>
@@ -63,6 +63,34 @@
                 </div>
             </div>
         </section>
+
+        <!-- 动态四化区域 -->
+        <div v-if="decadalMutagen || yearlyMutagen" class="mt-[1px] md:mt-0.5 px-0.5 md:px-1 flex flex-wrap gap-[1px] md:gap-0.5">
+            <span
+                v-if="decadalMutagen"
+                class="text-[0.35rem] md:text-[10px] font-bold px-[1px] rounded-[1px] leading-none text-white bg-green-600"
+            >
+                {{ decadalMutagen }}
+            </span>
+            <span
+                v-if="yearlyMutagen"
+                class="text-[0.35rem] md:text-[10px] font-bold px-[1px] rounded-[1px] leading-none text-white bg-blue-600"
+            >
+                {{ yearlyMutagen }}
+            </span>
+        </div>
+
+        <!-- 流曜星区域 -->
+        <div v-if="flowingStars && flowingStars.length > 0" class="mt-[1px] md:mt-0.5 px-0.5 md:px-1 flex flex-wrap gap-[1px] md:gap-0.5">
+            <span
+                v-for="star in flowingStars"
+                :key="star.name"
+                class="text-[0.35rem] md:text-[10px] font-bold px-[1px] rounded-[1px] leading-none"
+                :class="getFlowingStarClass(star.horoscopeType)"
+            >
+                {{ star.name }}
+            </span>
+        </div>
 
         <!-- C. 底部：神煞 & 博士 & 大限 -->
         <footer class="mt-0.5 md:mt-2 border-t border-gray-100 pt-[1px] md:pt-1 px-0.5 md:px-2 pb-0.5 md:pb-2">
@@ -94,10 +122,19 @@ import {
     GetJiangqianTwelveArray,
     GetSuiqianTwelveArray
 } from '../../lib/stars/48-ShenSha/index.js';
+import { GetMutagenStars } from '../../lib/stars/mutagen/calculator.js';
 
 export default {
     name: 'PalaceCell',
-    props: ['data', 'index', 'gridClass', 'userInfo'],
+    props: ['data', 'index', 'gridClass', 'userInfo', 'flowingStars', 'currentDecade', 'currentYear'],
+    watch: {
+        flowingStars: {
+            handler(newVal) {
+                console.log(`宫位${this.index + 1}流动星变化:`, newVal);
+            },
+            immediate: true
+        }
+    },
     setup(props) {
         // 计算真正的装饰星
         const calculatedGods = computed(() => {
@@ -152,8 +189,85 @@ export default {
             return palaceMap[branch] || 0;
         }
 
+        // 获取流曜星的样式类
+        const getFlowingStarClass = (horoscopeType) => {
+            switch (horoscopeType) {
+                case 'decadal':
+                    return 'text-green-700 bg-green-100'; // 大限 - 绿色
+                case 'yearly':
+                    return 'text-blue-700 bg-blue-100'; // 流年 - 蓝色
+                case 'monthly':
+                    return 'text-red-700 bg-red-100'; // 流月 - 红色
+                default:
+                    return 'text-gray-700 bg-gray-100';
+            }
+        };
+
+        // 计算大限四化
+        const decadalMutagen = computed(() => {
+            if (!props.currentDecade) return '';
+
+            const mutagenStars = GetMutagenStars(props.currentDecade.heavenlyStem);
+            if (!mutagenStars) return '';
+
+            const mutagenTypes = ['禄', '权', '科', '忌'];
+
+            // 检查主星
+            for (const star of props.data.majorStars || []) {
+                const index = mutagenStars.indexOf(star.name);
+                if (index !== -1) return mutagenTypes[index];
+            }
+
+            // 检查辅星
+            for (const star of props.data.minorStars || []) {
+                const index = mutagenStars.indexOf(star.name);
+                if (index !== -1) return mutagenTypes[index];
+            }
+
+            // 检查杂曜
+            for (const star of props.data.miscStars || []) {
+                const index = mutagenStars.indexOf(star);
+                if (index !== -1) return mutagenTypes[index];
+            }
+
+            return '';
+        });
+
+        // 计算流年四化
+        const yearlyMutagen = computed(() => {
+            if (!props.currentYear) return '';
+
+            const mutagenStars = GetMutagenStars(props.currentYear.heavenlyStem);
+            if (!mutagenStars) return '';
+
+            const mutagenTypes = ['禄', '权', '科', '忌'];
+
+            // 检查主星
+            for (const star of props.data.majorStars || []) {
+                const index = mutagenStars.indexOf(star.name);
+                if (index !== -1) return mutagenTypes[index];
+            }
+
+            // 检查辅星
+            for (const star of props.data.minorStars || []) {
+                const index = mutagenStars.indexOf(star.name);
+                if (index !== -1) return mutagenTypes[index];
+            }
+
+            // 检查杂曜
+            for (const star of props.data.miscStars || []) {
+                const index = mutagenStars.indexOf(star);
+                if (index !== -1) return mutagenTypes[index];
+            }
+
+            return '';
+        });
+
         return {
-            calculatedGods
+            calculatedGods,
+            getFlowingStarClass,
+            decadalMutagen,
+            yearlyMutagen
         };
     }
 };

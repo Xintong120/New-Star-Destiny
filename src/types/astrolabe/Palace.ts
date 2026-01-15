@@ -5,8 +5,8 @@ import type { PalaceStar } from './PalaceStar';
  */
 export interface Palace {
   name: string;
-  heavenlyStem: string;
-  earthlyBranch: string;
+  stem: string;
+  branch: string;
   isBodyPalace: boolean;
   majorStars?: PalaceStar[];
   minorStars?: PalaceStar[];

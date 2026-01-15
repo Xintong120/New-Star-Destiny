@@ -2,7 +2,11 @@
     <section class="min-h-screen py-4 md:py-8 px-2 md:px-4 lg:px-8 flex flex-col items-center" aria-label="命盘详情">
 
         <!-- 导航: 使用 nav 标签 -->
-        <time-limit-nav @change="$emit('change-limit', $event)"></time-limit-nav>
+        <time-limit-nav
+            :astrolabe="fullChartData"
+            @change="$emit('change-limit', $event)"
+            @horoscope-change="handleHoroscopeChange"
+        ></time-limit-nav>
 
         <!-- 命盘主体 Grid -->
         <!--
@@ -43,6 +47,9 @@
                 :index="index"
                 :grid-class="getGridPositionClass(index)"
                 :user-info="userInfo"
+                :flowing-stars="flowingStars[index] || []"
+                :current-decade="currentDecade"
+                :current-year="currentYear"
             ></palace-cell>
 
         </div>
@@ -54,7 +61,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, reactive } from 'vue';
 import PalaceCell from './PalaceCell.vue';
 import CenterInfo from './CenterInfo.vue';
 import TimeLimitNav from './TimeLimitNav.vue';
@@ -62,13 +69,42 @@ import TimeLimitNav from './TimeLimitNav.vue';
 export default {
     name: 'ChartView',
     props: ['userData', 'fullChartData'],
-    emits: ['change-limit'],
+    emits: ['change-limit', 'horoscope-change'],
     components: {
         'palace-cell': PalaceCell,
         'center-info': CenterInfo,
         'time-limit-nav': TimeLimitNav
     },
+    data() {
+        return {
+            flowingStars: {},
+            currentDecade: null,
+            currentYear: null
+        };
+    },
+    methods: {
+        handleHoroscopeChange(horoscopeData) {
+            console.log('=== ChartView接收horoscope-change事件 ===');
+            console.log('接收的horoscopeData:', horoscopeData);
+
+            // 更新流曜星数据
+            if (horoscopeData.flowingStars) {
+                Object.assign(this.flowingStars, horoscopeData.flowingStars);
+                console.log('更新后的flowingStars:', this.flowingStars);
+            }
+
+            // 更新当前大限和流年
+            this.currentDecade = horoscopeData.decade;
+            this.currentYear = horoscopeData.year;
+
+            // 传递运限变化事件给父组件
+            this.$emit('horoscope-change', horoscopeData);
+        }
+    },
     setup(props) {
+        // 流曜星数据
+        const flowingStars = reactive({});
+
         const uiGridOrder = computed(() => {
             /* 十二地支固定顺序: 寅卯辰巳午未申酉戌亥子丑 */
             const p = (branch) => props.fullChartData.palaces.find(x => x.branch === branch);
@@ -139,7 +175,7 @@ export default {
             return '';
         };
 
-        return { uiGridOrder, userInfo, getGridPositionClass };
+        return { uiGridOrder, userInfo, getGridPositionClass, flowingStars };
     }
 };
 </script>
