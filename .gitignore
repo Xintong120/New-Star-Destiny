@@ -135,6 +135,7 @@ Desktop.ini
 
 # VS Code
 .vscode/
+*.code-workspace
 
 # Demo files
 all.html
