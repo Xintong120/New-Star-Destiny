@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "lunar-lite": "^0.2.7",
-    "vue": "^3.5.26"
+    "vue": "^3.5.26",
+    "web-vitals": "^5.1.0"
   }
 }
