@@ -11,12 +11,14 @@ export class PerformanceMonitor {
     this.storage = options.storage || new LocalStorage();
     this.reporter = options.reporter;
 
+    // 记录页面加载基准时间，用于标准化时间戳
+    this.pageLoadTime = performance.timing.navigationStart || Date.now();
+
     this.init();
   }
 
   init() {
     this.loadPersistedData();
-    this.initINPMonitoring();
     this.initWebVitals();
 
     if (this.options.enableDevPanel) {
@@ -24,62 +26,47 @@ export class PerformanceMonitor {
     }
   }
 
-  initINPMonitoring() {
-    // 使用Event Timing API监听用户交互
-    if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.entryType === 'event' && entry.duration > 0) {
-            // 计算INP (简化版)
-            const inp = this.calculateINP(entry);
-            if (inp > 0) {
-              this.recordInteraction({
-                type: 'inp',
-                value: inp,
-                target: this.getElementInfo(entry.target),
-                interactionType: entry.name,
-                timestamp: entry.startTime
-              });
-            }
-          }
-        }
-      });
 
-      observer.observe({ entryTypes: ['event'] });
-    }
-  }
-
-  calculateINP(entry) {
-    // 简化的INP计算逻辑
-    // 实际应该使用更复杂的算法考虑多个帧
-    return entry.duration;
-  }
 
   initWebVitals() {
     // Web Vitals将在adapter中初始化
   }
 
   recordInteraction(data) {
-    const interaction = {
-      id: Date.now() + Math.random(),
-      url: window.location.href,
-      userAgent: navigator.userAgent,
-      timestamp: Date.now(),
-      ...data
-    };
+    try {
+      // 数据验证和清理
+      if (!data || typeof data !== 'object') return;
+      if (typeof data.value !== 'number' && typeof data.value !== 'undefined') return;
+      if (data.timestamp && (typeof data.timestamp !== 'number' || data.timestamp < 0)) return;
 
-    this.interactions.push(interaction);
+      // 标准化时间戳：如果传入的时间戳小于当前时间（可能是相对时间），转换为绝对时间
+      const timestamp = data.timestamp && data.timestamp < Date.now() - 86400000
+        ? this.pageLoadTime + data.timestamp
+        : data.timestamp || Date.now();
 
-    // 限制内存中的记录数量
-    if (this.interactions.length > this.options.maxRecords) {
-      this.interactions = this.interactions.slice(-this.options.maxRecords);
-    }
+      const interaction = {
+        id: Date.now() + Math.random(),
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        timestamp: timestamp,
+        ...data
+      };
 
-    this.persistData();
+      this.interactions.push(interaction);
 
-    // 上报数据
-    if (this.reporter) {
-      this.reporter.report(interaction);
+      // 限制内存中的记录数量
+      if (this.interactions.length > this.options.maxRecords) {
+        this.interactions = this.interactions.slice(-this.options.maxRecords);
+      }
+
+      this.persistData();
+
+      // 上报数据
+      if (this.reporter) {
+        this.reporter.report(interaction);
+      }
+    } catch (error) {
+      console.warn('Performance monitor error:', error);
     }
   }
 

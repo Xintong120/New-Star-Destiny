@@ -150,3 +150,5 @@ Trace-*.json.gz
 # Documentation
 doc/
 src/doc/
+src/lib/monitoring/README.md
+Downloads/

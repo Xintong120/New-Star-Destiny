@@ -31,26 +31,26 @@ export class DevPanel {
       <div class="perf-content">
         <div class="perf-metrics">
           <div class="metric">
-            <span class="label">Interactions:</span>
+            <span class="label">Total Records:</span>
             <span class="value" id="interactions-count">0</span>
           </div>
           <div class="metric">
-            <span class="label">Avg INP:</span>
-            <span class="value" id="avg-inp">0ms</span>
+            <span class="label">JS Errors:</span>
+            <span class="value" id="errors-count">0</span>
           </div>
           <div class="metric">
-            <span class="label">Worst INP:</span>
-            <span class="value" id="worst-inp">0ms</span>
+            <span class="label">User Clicks:</span>
+            <span class="value" id="clicks-count">0</span>
           </div>
           <div class="metric">
-            <span class="label">P95 INP:</span>
-            <span class="value" id="p95-inp">0ms</span>
+            <span class="label">Page Duration:</span>
+            <span class="value" id="page-duration">0s</span>
           </div>
         </div>
         <div class="perf-core-vitals">
           <div class="vital">
-            <span class="label">FID:</span>
-            <span class="value" id="fid-value">-</span>
+            <span class="label">INP:</span>
+            <span class="value" id="inp-value">-</span>
           </div>
           <div class="vital">
             <span class="label">CLS:</span>
@@ -59,6 +59,20 @@ export class DevPanel {
           <div class="vital">
             <span class="label">LCP:</span>
             <span class="value" id="lcp-value">-</span>
+          </div>
+        </div>
+        <div class="perf-network">
+          <div class="metric">
+            <span class="label">DNS:</span>
+            <span class="value" id="dns-time">0ms</span>
+          </div>
+          <div class="metric">
+            <span class="label">TCP:</span>
+            <span class="value" id="tcp-time">0ms</span>
+          </div>
+          <div class="metric">
+            <span class="label">Page Load:</span>
+            <span class="value" id="load-time">0ms</span>
           </div>
         </div>
         <div class="perf-actions">
@@ -128,18 +142,37 @@ export class DevPanel {
 
     // 更新基本指标
     this.updateElement('interactions-count', stats.totalInteractions);
-    this.updateElement('avg-inp', Math.round(stats.inp.avg) + 'ms', stats.inp.avg, 'inp');
-    this.updateElement('worst-inp', Math.round(stats.inp.max) + 'ms', stats.inp.max, 'inp');
-    this.updateElement('p95-inp', Math.round(stats.inp.p95) + 'ms', stats.inp.p95, 'inp');
+
+    // 错误计数
+    const errorCount = this.monitor.interactions.filter(i => i.type === 'error').length;
+    this.updateElement('errors-count', errorCount);
+
+    // 点击计数
+    const clickCount = this.monitor.interactions.filter(i => i.type === 'user_click').length;
+    this.updateElement('clicks-count', clickCount);
+
+    // 页面停留时间
+    const pageLeave = this.getLatestMetric('page_leave');
+    const duration = pageLeave ? Math.round(pageLeave.value / 1000) + 's' : '0s';
+    this.updateElement('page-duration', duration);
 
     // 更新Core Web Vitals
-    const latestFID = this.getLatestMetric('fid');
+    const latestINP = this.getLatestMetric('inp');
     const latestCLS = this.getLatestMetric('cls');
     const latestLCP = this.getLatestMetric('lcp');
 
-    this.updateElement('fid-value', latestFID ? Math.round(latestFID.value) + 'ms' : '-', latestFID?.value, 'fid');
+    this.updateElement('inp-value', latestINP ? Math.round(latestINP.value) + 'ms' : '-', latestINP?.value, 'inp');
     this.updateElement('cls-value', latestCLS ? latestCLS.value.toFixed(3) : '-', latestCLS?.value, 'cls');
     this.updateElement('lcp-value', latestLCP ? Math.round(latestLCP.value) + 'ms' : '-', latestLCP?.value, 'lcp');
+
+    // 网络指标
+    const dnsTime = this.getLatestMetric('dns_lookup');
+    const tcpTime = this.getLatestMetric('tcp_connect');
+    const loadTime = this.getLatestMetric('page_load_time');
+
+    this.updateElement('dns-time', dnsTime ? Math.round(dnsTime.value) + 'ms' : '0ms');
+    this.updateElement('tcp-time', tcpTime ? Math.round(tcpTime.value) + 'ms' : '0ms');
+    this.updateElement('load-time', loadTime ? Math.round(loadTime.value) + 'ms' : '0ms');
   }
 
   updateElement(id, text, value, metricType) {
@@ -271,7 +304,7 @@ export class DevPanel {
         padding: 12px;
       }
 
-      .perf-metrics, .perf-core-vitals {
+      .perf-metrics, .perf-core-vitals, .perf-network {
         margin-bottom: 12px;
       }
 

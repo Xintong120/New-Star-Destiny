@@ -1,5 +1,9 @@
 import { PerformanceMonitor } from './performance-monitor.js';
 import { WebVitalsAdapter } from './web-vitals-adapter.js';
+import { ErrorCollector } from './error-collector.js';
+import { UserBehaviorTracker } from './user-behavior-tracker.js';
+import { LifecycleMonitor } from './lifecycle-monitor.js';
+import { Logger } from './logger.js';
 import { GoogleAnalyticsReporter, ConsoleReporter, CompositeReporter } from './reporter.js';
 
 /**
@@ -8,6 +12,10 @@ import { GoogleAnalyticsReporter, ConsoleReporter, CompositeReporter } from './r
  * @param {string} options.gaMeasurementId - Google Analytics Measurement ID
  * @param {boolean} options.enableDevPanel - 是否启用开发面板
  * @param {boolean} options.enableConsoleReporter - 是否启用控制台输出
+ * @param {boolean} options.enableErrorCollection - 是否启用异常收集
+ * @param {boolean} options.enableUserBehaviorTracking - 是否启用用户行为跟踪
+ * @param {boolean} options.enableLifecycleMonitoring - 是否启用生命周期监控
+ * @param {boolean} options.enableLogging - 是否启用日志收集
  * @param {number} options.maxRecords - 最大记录数
  * @param {string} options.storageKey - 本地存储键名
  * @returns {PerformanceMonitor} 监控实例
@@ -41,6 +49,34 @@ export function initPerformanceMonitoring(options = {}) {
   const webVitals = new WebVitalsAdapter(monitor);
   webVitals.init();
 
+  // 初始化异常收集器
+  if (options.enableErrorCollection !== false) {
+    const errorCollector = new ErrorCollector(monitor);
+    errorCollector.init();
+    monitor.errorCollector = errorCollector;
+  }
+
+  // 初始化用户行为跟踪器
+  if (options.enableUserBehaviorTracking !== false) {
+    const userBehaviorTracker = new UserBehaviorTracker(monitor);
+    userBehaviorTracker.init();
+    monitor.userBehaviorTracker = userBehaviorTracker;
+  }
+
+  // 初始化生命周期监控器
+  if (options.enableLifecycleMonitoring !== false) {
+    const lifecycleMonitor = new LifecycleMonitor(monitor);
+    lifecycleMonitor.init();
+    monitor.lifecycleMonitor = lifecycleMonitor;
+  }
+
+  // 初始化日志收集器
+  if (options.enableLogging !== false) {
+    const logger = new Logger(monitor);
+    logger.init();
+    monitor.logger = logger;
+  }
+
   // 初始化开发面板 (只在开发环境下)
   if (options.enableDevPanel !== false && process.env.NODE_ENV === 'development') {
     // 动态导入DevPanel，只在开发环境加载
@@ -62,6 +98,10 @@ export function initPerformanceMonitoring(options = {}) {
 export {
   PerformanceMonitor,
   WebVitalsAdapter,
+  ErrorCollector,
+  UserBehaviorTracker,
+  LifecycleMonitor,
+  Logger,
   GoogleAnalyticsReporter,
   ConsoleReporter,
   CompositeReporter

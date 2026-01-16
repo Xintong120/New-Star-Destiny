@@ -12,6 +12,12 @@ const performanceMonitor = initPerformanceMonitoring({
   enableDevPanel: import.meta.env.DEV,
   enableConsoleReporter: import.meta.env.DEV,
 
+  // 启用新监控模块
+  enableErrorCollection: true,
+  enableUserBehaviorTracking: true,
+  enableLifecycleMonitoring: true,
+  enableLogging: true,
+
   // 其他配置
   maxRecords: 1000
 });

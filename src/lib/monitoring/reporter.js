@@ -45,7 +45,12 @@ export class GoogleAnalyticsReporter {
         custom_map: {
           'metric_rating': 'metric_rating',
           'metric_value': 'metric_value',
-          'metric_type': 'metric_type'
+          'metric_type': 'metric_type',
+          'error_type': 'error_type',
+          'session_id': 'session_id',
+          'interaction_type': 'interaction_type',
+          'element_tag': 'element_tag',
+          'page_duration': 'page_duration'
         }
       });
     }
@@ -58,18 +63,25 @@ export class GoogleAnalyticsReporter {
     }
 
     try {
+      // 根据数据类型确定事件类别和名称
+      const eventConfig = this.getEventConfig(data);
+
       // 发送自定义事件到GA4
-      gtag('event', `web_vitals_${data.type}`, {
-        event_category: 'Web Vitals',
+      gtag('event', eventConfig.name, {
+        event_category: eventConfig.category,
         event_label: data.target?.tagName || 'unknown',
-        value: Math.round(data.value),
+        value: Math.round(data.value) || 1,
         custom_parameters: {
           metric_rating: data.rating || 'unknown',
           metric_value: data.value,
           metric_type: data.type,
           interaction_type: data.interactionType || 'unknown',
           page_url: data.url,
-          timestamp: data.timestamp
+          timestamp: data.timestamp,
+          session_id: data.sessionId,
+          error_type: data.error?.type,
+          element_tag: data.target?.tagName,
+          page_duration: data.duration
         }
       });
 
@@ -80,6 +92,58 @@ export class GoogleAnalyticsReporter {
     } catch (error) {
       console.error('Failed to report to Google Analytics:', error);
     }
+  }
+
+  getEventConfig(data) {
+    const type = data.type;
+
+    // Web Vitals
+    if (['inp', 'cls', 'lcp', 'fcp', 'ttfb', 'fid'].includes(type)) {
+      return {
+        name: `web_vitals_${type}`,
+        category: 'Web Vitals'
+      };
+    }
+
+    // 异常
+    if (type === 'error') {
+      return {
+        name: 'javascript_error',
+        category: 'Errors'
+      };
+    }
+
+    // 用户行为
+    if (['page_view', 'page_leave', 'page_return', 'user_click', 'scroll_depth', 'page_referrer'].includes(type)) {
+      return {
+        name: `user_${type.replace('_', '_')}`,
+        category: 'User Behavior'
+      };
+    }
+
+    // 生命周期和网络
+    if (['dns_lookup', 'tcp_connect', 'ssl_handshake', 'request_response', 'response_download',
+         'page_load_time', 'dom_parsing', 'dom_content_loaded', 'resource_load',
+         'xhr_request', 'fetch_request'].includes(type)) {
+      return {
+        name: `performance_${type}`,
+        category: 'Performance'
+      };
+    }
+
+    // 日志
+    if (type === 'log') {
+      return {
+        name: `log_${data.interactionType}`,
+        category: 'Logs'
+      };
+    }
+
+    // 默认
+    return {
+      name: `custom_${type}`,
+      category: 'Custom'
+    };
   }
 
   // 批量上报
@@ -122,11 +186,30 @@ export class ConsoleReporter {
   getUnit(type) {
     switch (type) {
       case 'cls': return '';
+      case 'error':
+      case 'page_view':
+      case 'page_leave':
+      case 'page_return':
+      case 'user_click':
+      case 'scroll_depth':
+      case 'page_referrer':
+      case 'log': return '';
       case 'inp':
       case 'fid':
       case 'lcp':
       case 'fcp':
-      case 'ttfb': return 'ms';
+      case 'ttfb':
+      case 'dns_lookup':
+      case 'tcp_connect':
+      case 'ssl_handshake':
+      case 'request_response':
+      case 'response_download':
+      case 'page_load_time':
+      case 'dom_parsing':
+      case 'dom_content_loaded':
+      case 'resource_load':
+      case 'xhr_request':
+      case 'fetch_request': return 'ms';
       default: return '';
     }
   }
